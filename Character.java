@@ -1,12 +1,18 @@
+enum Action{
+  UP, LEFT, DOWN, RIGHT;
+}
 class Character{
   int x, y, w, h, vx, vy;
-  boolean[] directions;
+
   ElementType type;
-  public Character(int x, int y, int w, int h, ElementType type){
+  HashMap<String, Enum> map;
+  public Character(int x, int y, int w, int h, ElementType type, HashMap<String, Action> map){
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
+
+
     if(type != ElementType.FIRE && type != ElementType.WATER){
       throw new RuntimeException("Character Element Type is invalid");
     }
@@ -14,7 +20,7 @@ class Character{
 
     vx = 0;
     vy = 0;
-    directions = new boolean[4];
+    this.map = map;
   }
 
   void display(){
@@ -28,7 +34,9 @@ class Character{
     rect(x, y, w, h);
   }
 
+  void update(HashSet keysPressed){
 
+  }
 
 
 
