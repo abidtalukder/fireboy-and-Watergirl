@@ -28,19 +28,6 @@ class Character{
     rect(x, y, w, h);
   }
 
-  void setDirections(boolean[] directions){
-    this.directions = directions;
-  }
-
-  void update(){
-
-   if(directions[1]){vx = -5;}
-   else{vx = 0;}
-    x += vx;
-
-    // HAVE TO UPDATE GRAVITY AND JUMPING
-    y += vy;
-  }
 
 
 
