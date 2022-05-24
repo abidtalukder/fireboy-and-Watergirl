@@ -10,20 +10,21 @@ class Platform{
   }
 
   void display(){
-    if(type == ElementType.DEFAULT){
-      fill(205,133,63);
-    }
-    if(type == ElementType.FIRE){
-      fill(165, 42, 42);
+    switch(type){
+      case DEFAULT:
+        fill(205,133,63);
+        break;
+      case FIRE:
+        fill(165, 42, 42);
+        break;
+      case WATER:
+        fill(0, 255, 255);
+        break;
+      case POISON:
+        fill(77, 181, 96);
+        break;
     }
 
-    if(type == ElementType.WATER){
-      fill(0, 255, 255);
-    }
-
-    if(type == ElementType.POISON){
-      fill(77, 181, 96);
-    }
     rect(x, y, w, h);
   }
 }
