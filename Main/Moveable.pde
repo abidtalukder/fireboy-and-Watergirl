@@ -11,6 +11,22 @@ class Moveable {
   this.speedLimit = speedLimit;
   
   }
+  
+  public void gravity(){
+  
+    
+    
+  
+  
+  }
+  
+  Platform onPlatform( int x, int y, int w, int h){
+  
+    return null;
+  
+  
+  
+  }
 
 
 
