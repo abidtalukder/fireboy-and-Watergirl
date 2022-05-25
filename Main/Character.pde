@@ -3,8 +3,8 @@ class Character{
 
 
   float g = 0.4; // Gravitational constant
-  float mu = 0.7; // Friction constant
-  float speedLimit = 7; // Speed Limit
+  float friction = 0.7; // Friction constant
+  float speedLimit = 3; // Speed Limit
   float jumpConstant = -5; // Jump constant (up y-accel when jumping)
 
   ElementType type;
@@ -58,35 +58,61 @@ class Character{
 
   void update(){
      actions = currActions();
-
+    ax = 0;
     ay = g; // By default, set gravity to g
 
-    vx = 0;
     if (actions.contains(Action.Left)) {
-       vx += -3;
+       ax -= 0.2;
     }
     if(actions.contains(Action.Right)){
-       vx += 3;
+       ax += 0.2;
     }
-
+    
     if(y + h >= height){
-      vy = 0; // stop the Character from moving vertically
-      // (just cancelling out the gravity with the normal force => no net acceleration but velocity remains the same)
-      ay -= g;
-      y = height - h;
+      ay -= g; // Normal force cancels out gravity force
       if(actions.contains(Action.Up)){
         ay += jumpConstant;
       }
     }
-
+    friction = 1;
+    if(actions.size() == 0){
+      friction = 0.95;
+    }
     vx += ax;
-    vy += ay; // Have to work on a jump
+    vy += ay;
+    
+    vx *= friction;
+    
+    
     if(Math.abs(vx) >= speedLimit){
       vx = Math.signum(vx) * speedLimit;
     }
 
     x += vx;
     y += vy;
+    
+    checkBoundaries();
   }
-
+  void checkBoundaries(){
+   // Border collisions - generalize this to Platforms too later
+   if(x < 0){
+     x = 0;
+     vx = 0;
+   }
+   
+   if(x + w > width){
+     x = width - w;
+     vx = 0;
+   }
+   
+   if(y < 0){
+     y = 0;
+     vy = 0;
+   }
+   
+   if(y + h > height){
+     y = height - h;
+     vy = 0;
+   }
+  }
 }
