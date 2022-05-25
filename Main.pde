@@ -4,12 +4,14 @@ import java.util.HashSet;
 enum ElementType{
   DEFAULT, FIRE, WATER, POISON;
 }
+
+enum Action{
+  Up, Left, Down, Right;
+}
+
 Character Fireboy, Watergirl;
 Platform p;
 HashSet keysPressed = new HashSet();
-
-boolean wUp, wLeft, wDown, wRight;
-boolean fUp, fLeft, fDown, fRight;
 
 void setup(){
   size(500, 500);
@@ -17,39 +19,40 @@ void setup(){
 
    p = new Platform(80, 470, 380, 30, ElementType.DEFAULT);
 
-   /**
-   Hashmap Idea
-   **/
-   // Fireboy Hashmap:
+    HashMap<String, Action> map = new HashMap<String, Action>();
 
-   // HashMap<String, enum> map = new HashMap<String, enum>();
-   // map.add("i", Action.UP);
-   // map.add("j", Action.LEFT);
-   // map.add("k", Action.DOWN);
-   // map.add("l", Action.RIGHT);
-   // Fireboy = new Character(20, 470, 20, 30, ElementType.FIRE, map);
+    // For now, IJKL for Fireboy - easier than having to deal with keyCODED and a different type
+    map.put("i", Action.Up);
+    map.put("j", Action.Left);
+    map.put("k", Action.Down);
+    map.put("l", Action.Right);
+    Fireboy = new Character(20, 470, 20, 30, ElementType.FIRE, map);
 
-   // map = new HashMap<String, enum>();
-   // map.add("w", Action.UP);
-   // map.add("a", Action.LEFT);
-   // map.add("s", Action.DOWN);
-   // map.add("d", Action.RIGHT);
-   // Watergirl = new Character(50, 470, 20, 30, ElementType.WATER, map);
+    map = new HashMap<String, Action>();
+    map.put("w", Action.Up);
+    map.put("a", Action.Left);
+    map.put("s", Action.Down);
+    map.put("d", Action.Right);
+    Watergirl = new Character(50, 470, 20, 30, ElementType.WATER, map);
 
 }
 
 void draw(){
   background(255);
-  //Fireboy.display();
-  //Watergirl.display();
-  p.display();
+  Fireboy.update();
+  Fireboy.display();
+  Watergirl.update();
+  Watergirl.display();
+  // p.display();
 }
 
 void keyPressed(){
-  keysPressed.add(key + "");
+  Fireboy.currentlyHeld.add(key + "");
+  Watergirl.currentlyHeld.add(key + "");
 }
 
 
 void keyReleased(){
-  keysPressed.remove(key + "");
+  Fireboy.currentlyHeld.remove(key + "");
+  Watergirl.currentlyHeld.remove(key + "");
 }
