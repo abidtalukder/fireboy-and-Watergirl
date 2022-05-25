@@ -1,5 +1,11 @@
 class Character{
-  int x, y, w, h, vx, vy, ax, ay;
+  float x, y, w, h, vx, vy, ax, ay;
+
+
+  float g = 0.4; // Gravitational constant
+  float mu = 0.7; // Friction constant
+  float speedLimit = 7; // Speed Limit
+  float jumpConstant = -5; // Jump constant (up y-accel when jumping)
 
   ElementType type;
   HashMap<String, Action> map;
@@ -51,6 +57,8 @@ class Character{
   void update(){
     HashSet<Action> actions = currActions();
 
+    ay = g; // By default, set gravity to g
+
     vx = 0;
     if (actions.contains(Action.Left)) {
        vx += -3;
@@ -58,8 +66,22 @@ class Character{
     if(actions.contains(Action.Right)){
        vx += 3;
     }
+
+    if(y + h >= height){
+      vy = 0; // stop the Character from moving vertically
+      // (just cancelling out the gravity with the normal force => no net acceleration but velocity remains the same)
+      ay -= g;
+      y = height - h;
+      if(actions.contains(Action.Up)){
+        ay += jumpConstant;
+      }
+    }
+
     vx += ax;
     vy += ay; // Have to work on a jump
+    if(Math.abs(vx) >= speedLimit){
+      vx = Math.signum(vx) * speedLimit;
+    }
 
     x += vx;
     y += vy;

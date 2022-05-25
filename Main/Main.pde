@@ -6,7 +6,8 @@ enum ElementType{
 }
 
 enum Action{
-  Up, Left, Down, Right;
+  Up, Left, Right
+  // Down
 }
 
 Character Fireboy, Watergirl;
@@ -24,14 +25,14 @@ void setup(){
     // For now, IJKL for Fireboy - easier than having to deal with keyCODED and a different type
     map.put("i", Action.Up);
     map.put("j", Action.Left);
-    map.put("k", Action.Down);
+    // map.put("k", Action.Down);
     map.put("l", Action.Right);
     Fireboy = new Character(20, 470, 20, 30, ElementType.FIRE, map);
 
     map = new HashMap<String, Action>();
     map.put("w", Action.Up);
     map.put("a", Action.Left);
-    map.put("s", Action.Down);
+    // map.put("s", Action.Down);
     map.put("d", Action.Right);
     Watergirl = new Character(50, 470, 20, 30, ElementType.WATER, map);
 
