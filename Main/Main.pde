@@ -6,8 +6,9 @@ enum ElementType{
 }
 
 enum Action{
-  Up, Left, Right
+  Up, Left, Right, Reset
   // Down
+
 }
 
 Character Fireboy, Watergirl;
@@ -16,7 +17,6 @@ HashSet keysPressed = new HashSet();
 
 void setup(){
   size(500, 500);
-
 
    p = new Platform(80, 470, 380, 30, ElementType.DEFAULT);
 
@@ -27,6 +27,7 @@ void setup(){
     map.put("j", Action.Left);
     // map.put("k", Action.Down);
     map.put("l", Action.Right);
+    map.put("r", Action.Reset);
     Fireboy = new Character(20, 470, 20, 30, ElementType.FIRE, map);
 
     map = new HashMap<String, Action>();
@@ -34,17 +35,26 @@ void setup(){
     map.put("a", Action.Left);
     // map.put("s", Action.Down);
     map.put("d", Action.Right);
+    map.put("r", Action.Reset);
     Watergirl = new Character(50, 470, 20, 30, ElementType.WATER, map);
 
 }
 
 void draw(){
   background(255);
+  if(Fireboy.currentlyHeld.contains("r") ){
+      reset();
+  }
+
   Fireboy.update();
   Fireboy.display();
   Watergirl.update();
   Watergirl.display();
   // p.display();
+}
+
+void reset(){
+  setup(); // For now, we can just setup the level from scratch
 }
 
 void keyPressed(){

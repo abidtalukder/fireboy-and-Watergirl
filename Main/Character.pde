@@ -9,7 +9,9 @@ class Character{
 
   ElementType type;
   HashMap<String, Action> map;
+
   HashSet<String> currentlyHeld;
+  HashSet<Action> actions;
   public Character(int x, int y, int w, int h, ElementType type, HashMap<String, Action> map){
     this.x = x;
     this.y = y;
@@ -55,7 +57,7 @@ class Character{
 
 
   void update(){
-    HashSet<Action> actions = currActions();
+     actions = currActions();
 
     ay = g; // By default, set gravity to g
 
