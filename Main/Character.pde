@@ -1,18 +1,21 @@
 class Character{
   float x, y, w, h, vx, vy, ax, ay;
 
-
   float g = 0.4; // Gravitational constant
   float friction = 0.7; // Friction constant
   float speedLimit = 3; // Speed Limit
   float jumpConstant = -5; // Jump constant (up y-accel when jumping)
 
   ElementType type;
+  Controller controller;
   HashMap<Integer, Action> map;
-
-  HashSet<Integer> currentlyHeld;
   HashSet<Action> actions;
-  public Character(int x, int y, int w, int h, ElementType type, HashMap<Integer, Action> map){
+  
+  public Character(int x, int y, ElementType type, HashMap<Integer, Action> map, Controller controller){
+    this(x, y, 20, 30, type, map, controller);
+  }
+  
+  public Character(int x, int y, int w, int h, ElementType type, HashMap<Integer, Action> map, Controller controller){
     this.x = x;
     this.y = y;
     this.w = w;
@@ -28,12 +31,14 @@ class Character{
     ay = 0;
 
     this.map = map;
-    currentlyHeld = new HashSet<Integer>();
+    this.controller = controller;
   }
+  
+  
 
     HashSet<Action> currActions() {
         HashSet<Action> set = new HashSet<Action>();
-        for (Integer k : this.currentlyHeld) {
+        for (Integer k : controller.currentlyHeld) {
             if (map.containsKey(k)) {
                 set.add(map.get(k)); // Map the key (char / String) to an Action that the Character can perform
             }
@@ -52,7 +57,6 @@ class Character{
 
     rect(x, y, w, h);
   }
-
 
   void update(){
      actions = currActions();
@@ -80,7 +84,9 @@ class Character{
     vy += ay;
 
     vx *= friction;
-
+    if(Math.abs(vx) < 0.2) {
+      vx  = 0;
+    }
 
     if(Math.abs(vx) >= speedLimit){
       vx = Math.signum(vx) * speedLimit;
@@ -115,4 +121,10 @@ class Character{
      vy = 0;
    }
   }
+  
+  Rectangle getHurtBox(){
+    return new Rectangle( (int) x, (int) y, (int) w, (int) h );
+  }
+  
+   
 }

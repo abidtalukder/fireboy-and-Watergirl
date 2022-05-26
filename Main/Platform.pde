@@ -8,6 +8,10 @@ class Platform{
     this.h = h;
     this.type = type;
   }
+  
+  Rectangle getHurtBox(){
+    return new Rectangle( (int) x, (int) y, (int) w, (int) h );
+  }
 
   void display(){
     switch(type){
