@@ -4,7 +4,7 @@ class Character{
   float g = 0.4; // Gravitational constant
   float friction = 0.7; // Friction constant
   float speedLimit = 3; // Speed Limit
-  float jumpConstant = -5; // Jump constant (up y-accel when jumping)
+  float jumpConstant = -7; // Jump constant (up y-accel when jumping)
 
   ElementType type;
   Controller controller;
@@ -122,9 +122,9 @@ class Character{
    }
   }
   
-  Rectangle getHurtBox(){
-    return new Rectangle( (int) x, (int) y, (int) w, (int) h );
-  }
+  //Rectangle getHurtBox(){
+  //  return new Rectangle( (int) x, (int) y, (int) w, (int) h );
+  //}
   
    
 }
