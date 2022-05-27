@@ -18,17 +18,29 @@ enum CollisionType{
 }
 
 Character Fireboy, Watergirl;
-Platform p;
 Controller controller;
 HashSet keysPressed = new HashSet();
-
+ArrayList<Platform> Platforms;
 void setup(){
   size(500, 500);
-
+  noStroke();
   controller = new Controller();
   
   HashMap<Integer, Action> map = new HashMap<Integer, Action>();
-  p = new Platform(70, 440, 400, 10, ElementType.DEFAULT);
+  Platforms = new ArrayList<Platform>();
+  Platforms.add(new Platform(0, 487, 511, 18, ElementType.DEFAULT));
+  Platforms.add(new Platform(17, 499, -28, -503, ElementType.DEFAULT));
+  Platforms.add(new Platform(2, 11, 519, -35, ElementType.DEFAULT));
+  Platforms.add(new Platform(485, 5, 116, 507, ElementType.DEFAULT));
+  Platforms.add(new Platform(7, 412, 174, 20, ElementType.DEFAULT));
+  Platforms.add(new Platform(12, 324, 311, 19, ElementType.DEFAULT));
+  Platforms.add(new Platform(318, 325, 20, 72, ElementType.DEFAULT));
+  Platforms.add(new Platform(322, 381, 102, 17, ElementType.DEFAULT));
+  Platforms.add(new Platform(112, 242, 379, 21, ElementType.DEFAULT));
+  Platforms.add(new Platform(11, 93, 111, 87, ElementType.DEFAULT));
+  Platforms.add(new Platform(97, 154, 205, 25, ElementType.DEFAULT));
+  Platforms.add(new Platform(185, 54, 305, 16, ElementType.DEFAULT));
+  
   /**
   Adding "r" to trigger a reset, since both Characters store the current keys pressed
   Will try to make a global container later to avoid adding "r" to the Character hashmaps
@@ -60,8 +72,9 @@ void draw(){
     controller.keyRemove(KeyEvent.VK_R);
   }
   
-  
-  Fireboy.collisions.add(Fireboy.rectangleCollisions(p));
+  for(Platform p : Platforms){
+    Fireboy.collisions.add(Fireboy.rectangleCollisions(p));
+  }
   Fireboy.update();
   Fireboy.collisions = new HashSet<CollisionType>();
   
@@ -72,7 +85,9 @@ void draw(){
   }
   
 
-  Watergirl.collisions.add(Watergirl.rectangleCollisions(p));
+  for(Platform p : Platforms){
+    Watergirl.collisions.add(Watergirl.rectangleCollisions(p));
+  }
   Watergirl.update();
   Watergirl.collisions = new HashSet<CollisionType>();
   
@@ -84,8 +99,10 @@ void draw(){
     Watergirl.actions.remove(Action.Reset);
     reset();
   }
+  for(Platform p : Platforms){
+    p.display();
+  }
   
-  p.display();
 }
 
 void reset(){
