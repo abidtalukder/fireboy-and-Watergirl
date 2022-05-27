@@ -5,12 +5,12 @@ class Character{
   float friction = 0.7; // Friction constant
   float speedLimit = 3; // Speed Limit
   float jumpConstant = -7; // Jump constant (up y-accel when jumping)
-
+  
   ElementType type;
   Controller controller;
   HashMap<Integer, Action> map;
   HashSet<Action> actions;
-  
+  HashSet<CollisionType> collisions;
   public Character(int x, int y, ElementType type, HashMap<Integer, Action> map, Controller controller){
     this(x, y, 20, 30, type, map, controller);
   }
@@ -32,6 +32,7 @@ class Character{
 
     this.map = map;
     this.controller = controller;
+    collisions = new HashSet<CollisionType>();
   }
   
   
@@ -70,12 +71,14 @@ class Character{
        ax += 0.2;
     }
 
-    if(y + h >= height){
+    if(y + h >= height || collisions.contains(CollisionType.Bottom)){
       ay -= g; // Normal force cancels out gravity force
+      vy = 0;
       if(actions.contains(Action.Up)){
         ay += jumpConstant;
       }
     }
+    
     friction = 1;
     if(actions.size() == 0){
       friction = 0.95;
@@ -121,10 +124,46 @@ class Character{
      vy = 0;
    }
   }
+  CollisionType rectangleCollisions(Platform p){
   
-  //Rectangle getHurtBox(){
-  //  return new Rectangle( (int) x, (int) y, (int) w, (int) h );
-  //}
+  // Rectangular collision occurs when the components distances between the centers
+  // is less than the the sum of half the widths and the sum of half the heights
   
-   
+  
+  // Displacements between the centers
+  // Identify the center coordinates (left top translated by halfWidth, halfHeight) and subtract
+  
+  float dx = (this.x + this.w / 2.0) - (p.x + p.w / 2.0);
+  float dy = (this.y + this.h / 2.0) - (p.y + p.h / 2.0);
+  
+  // The combined half dimensions are essentially component "radii"
+  float combinedHalfWidths = (this.w / 2.0) + (p.w / 2.0);
+  float combinedHalfHeights = (this.h / 2.0) + (p.h / 2.0);
+  
+  if(abs(dx) < combinedHalfWidths && abs(dy) < combinedHalfHeights){
+    // Overlap is "signed" here (positive / negative) for simplicity
+    float overlapX = combinedHalfWidths - abs(dx);
+    float overlapY = combinedHalfHeights - abs(dy);
+    if(overlapX >= overlapY){
+      if(dy > 0){
+        this.y += overlapY;
+        return CollisionType.Top;
+      }
+      
+      this.y -= overlapY;
+      return CollisionType.Bottom;
+    }
+    
+    if(dx > 0){
+      this.x += overlapX;
+      return CollisionType.Right;
+    }
+    this.x -= overlapX;
+    return CollisionType.Left;
+    
+  }
+  return CollisionType.None;
+}
+
+  
 }

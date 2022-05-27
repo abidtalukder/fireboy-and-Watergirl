@@ -54,18 +54,17 @@ void setup(){
 
 void draw(){
   background(255);
-  Fireboy.update();
-  CollisionType side = rectangleCollisions(Fireboy, p);
-  Fireboy.display();
-  p.display();
-  text(side + "", 250, 250);
-  
-  
   // "r" is pressed
   if(controller.currentlyHeld.contains(KeyEvent.VK_R)){
     reset();
     controller.keyRemove(KeyEvent.VK_R);
   }
+  
+  
+  Fireboy.collisions.add(Fireboy.rectangleCollisions(p));
+  Fireboy.update();
+  Fireboy.collisions = new HashSet<CollisionType>();
+  
   // Fireboy death
   if(Fireboy.actions.contains(Action.Reset) ){
     Fireboy.actions.remove(Action.Reset);
@@ -73,14 +72,20 @@ void draw(){
   }
   
 
-  //Watergirl.update();
-  //Watergirl.display();
+  Watergirl.collisions.add(Watergirl.rectangleCollisions(p));
+  Watergirl.update();
+  Watergirl.collisions = new HashSet<CollisionType>();
+  
+  Fireboy.display();
+  Watergirl.display();
 
-  //// Watergirl death
-  //if(Watergirl.actions.contains(Action.Reset) ){
-  //  Watergirl.actions.remove(Action.Reset);
-  //  reset();
-  //}
+  // Watergirl death
+  if(Watergirl.actions.contains(Action.Reset) ){
+    Watergirl.actions.remove(Action.Reset);
+    reset();
+  }
+  
+  p.display();
 }
 
 void reset(){
@@ -94,46 +99,4 @@ void keyPressed(){
 
 void keyReleased(){
   controller.keyRemove(keyCode);
-}
-
-CollisionType rectangleCollisions(Character c, Platform p){
-  
-  // Rectangular collision occurs when the components distances between the centers
-  // is less than the the sum of half the widths and the sum of half the heights
-  
-  
-  // Displacements between the centers
-  // Identify the center coordinates (left top translated by halfWidth, halfHeight) and subtract
-  
-  float dx = (c.x + c.w / 2.0) - (p.x + p.w / 2.0);
-  float dy = (c.y + c.h / 2.0) - (p.y + p.h / 2.0);
-  
-  // The combined half dimensions are essentially component "radii"
-  float combinedHalfWidths = (c.w / 2.0) + (p.w / 2.0);
-  float combinedHalfHeights = (c.h / 2.0) + (p.h / 2.0);
-  
-  if(abs(dx) < combinedHalfWidths && abs(dy) < combinedHalfHeights){
-    // Overlap is "signed" here (positive / negative) for simplicity
-    float overlapX = combinedHalfWidths - abs(dx);
-    float overlapY = combinedHalfHeights - abs(dy);
-    if(overlapX >= overlapY){
-      if(dy > 0){
-        c.y += overlapY;
-        return CollisionType.Top;
-      }
-      
-      c.y -= overlapY;
-      return CollisionType.Bottom;
-    }
-    
-    if(dx > 0){
-      
-      c.x += overlapX;
-      return CollisionType.Right;
-    }
-    c.x -= overlapX;
-    return CollisionType.Left;
-    
-  }
-  return CollisionType.None;
 }
