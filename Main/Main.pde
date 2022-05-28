@@ -20,6 +20,8 @@ Controller controller;
 HashSet keysPressed = new HashSet();
 ArrayList<Platform> Platforms;
 Door d1, d2;
+boolean haveWon;
+
 void setup(){
   size(500, 500);
   noStroke();
@@ -37,14 +39,20 @@ void setup(){
   Platforms.add(new Platform(322, 381, 102, 17, ElementType.DEFAULT));
   Platforms.add(new Platform(112, 242, 379, 21, ElementType.DEFAULT));
   Platforms.add(new Platform(11, 93, 111, 87, ElementType.DEFAULT));
-  Platforms.add(new Platform(97, 154, 205, 25, ElementType.DEFAULT));
+  Platforms.add(new Platform(90, 154, 205, 25, ElementType.DEFAULT));
   Platforms.add(new Platform(185, 54, 305, 16, ElementType.DEFAULT));
-  d1 = new Door(364, 447, 30, 40);    
-  d2 = new Door(438, 14, 30, 40);
-  /**
-  Adding "r" to trigger a reset, since both Characters store the current keys pressed
-  Will try to make a global container later to avoid adding "r" to the Character hashmaps
-  **/
+  Platforms.add(new Platform(450, 450, 500, 500, ElementType.DEFAULT));
+  
+  Platforms.add(new Platform(350, 200, 200, 50, ElementType.DEFAULT));
+  
+  Platforms.add(new Platform(350, 486, 50, 10, ElementType.FIRE));
+  Platforms.add(new Platform(250, 486, 50, 10, ElementType.WATER));
+  Platforms.add(new Platform(200, 323, 50, 10, ElementType.POISON));
+  
+  
+  d1 = new Door(400, 15, 30, 40, ElementType.FIRE);    
+  d2 = new Door(440, 15, 30, 40, ElementType.WATER);
+
   map.put(KeyEvent.VK_R, Action.Reset);
 
   map.put(KeyEvent.VK_UP, Action.Up);
@@ -60,56 +68,60 @@ void setup(){
   map.put(KeyEvent.VK_A, Action.Left);
   map.put(KeyEvent.VK_D, Action.Right);
 
-  Watergirl = new Character(50, 470, ElementType.WATER, map, controller);
+  Watergirl = new Character(37, 381, ElementType.WATER, map, controller);
 }
 
 void draw(){
+  if(!haveWon){
   background(255);
-  // "r" is pressed
+  
+  // "r" is pressed => Reset
   if(controller.currentlyHeld.contains(KeyEvent.VK_R)){
     reset();
     controller.keyRemove(KeyEvent.VK_R);
   }
   
   for(Platform p : Platforms){
-    Fireboy.collisions.add(Fireboy.rectangleCollisions(p));
+    CollisionType collision = Fireboy.rectangleCollisions(p);
+    if(collision != CollisionType.None && (p.type == ElementType.WATER || p.type == ElementType.POISON)){
+      reset();
+    }
+    Fireboy.collisions.add(collision);
   }
   Fireboy.update();
-  Fireboy.collisions = new HashSet<CollisionType>();
-  
-  // Fireboy death
-  if(Fireboy.actions.contains(Action.Reset) ){
-    Fireboy.actions.remove(Action.Reset);
-    reset();
-  }
+  Fireboy.collisions = new HashSet<CollisionType>(); // Resetting the collisions
   
   for(Platform p : Platforms){
-    Watergirl.collisions.add(Watergirl.rectangleCollisions(p));
+     CollisionType collision = Watergirl.rectangleCollisions(p);
+     if(collision != CollisionType.None && (p.type == ElementType.FIRE || p.type == ElementType.POISON)){
+      reset();
+    }
+    Watergirl.collisions.add(collision);
   }
   Watergirl.update();
   Watergirl.collisions = new HashSet<CollisionType>();
   
-
-
-  // Watergirl death
-  if(Watergirl.actions.contains(Action.Reset) ){
-    Watergirl.actions.remove(Action.Reset);
-    reset();
-  }
   for(Platform p : Platforms){
     p.display();
   }
-  d1.update(Fireboy.isTouchingDoor(d1) || Watergirl.isTouchingDoor(d1));
-  d2.update(Fireboy.isTouchingDoor(d2) || Watergirl.isTouchingDoor(d2));
+  d1.update(Fireboy.isTouchingDoor(d1));
+  d2.update(Watergirl.isTouchingDoor(d2));
   
-  d1.display();
-  d2.display();
-  Fireboy.display();
-  Watergirl.display();
+    d1.display();
+    d2.display();
+    Fireboy.display();
+    Watergirl.display();
+    haveWon = d1.isOpen && d2.isOpen;
+  }
+  else{
+    background(255);
+    textSize(75);
+    text("You Won!", 100, 250);
+  }
 }
 
 void reset(){
-  setup(); // For now, we can just setup the level from scratch
+  setup(); // For now, we will just setup the level from scratch
 }
 
 void keyPressed(){

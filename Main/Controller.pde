@@ -11,9 +11,6 @@ class Controller{
   
   void keyRemove(int Int){
     currentlyHeld.remove(Int);
-  }
-  
-  
-  
+  }  
  
 }

@@ -164,10 +164,10 @@ class Character{
   return CollisionType.None;
 }
   boolean isTouchingDoor(Door d){
-      return (this.x + this.w >= d.x &&    // r1 right edge past r2 left
-      this.x <= d.x + d.w &&    // r1 left edge past r2 right
-      this.y + this.h >= d.y &&    // r1 top edge past r2 bottom
-      this.y <= d.y + d.h);     // r1 bottom edge past r2 top 
+      return (this.x + this.w >= d.x &&    
+      this.x <= d.x + d.w &&    
+      this.y + this.h >= d.y &&    
+      this.y <= d.y + d.h);     
   }
   
 }
