@@ -8,8 +8,6 @@ enum ElementType{
 
 enum Action{
   Up, Left, Right, Reset
-  // Down  (Redundant for now)p
-
 }
 
 enum CollisionType{
@@ -21,6 +19,7 @@ Character Fireboy, Watergirl;
 Controller controller;
 HashSet keysPressed = new HashSet();
 ArrayList<Platform> Platforms;
+Door d1, d2;
 void setup(){
   size(500, 500);
   noStroke();
@@ -29,7 +28,7 @@ void setup(){
   HashMap<Integer, Action> map = new HashMap<Integer, Action>();
   Platforms = new ArrayList<Platform>();
   Platforms.add(new Platform(0, 487, 511, 18, ElementType.DEFAULT));
-  Platforms.add(new Platform(17, 499, -28, -503, ElementType.DEFAULT));
+  Platforms.add(new Platform(0, 0, 20, 500, ElementType.DEFAULT));
   Platforms.add(new Platform(2, 11, 519, -35, ElementType.DEFAULT));
   Platforms.add(new Platform(485, 5, 116, 507, ElementType.DEFAULT));
   Platforms.add(new Platform(7, 412, 174, 20, ElementType.DEFAULT));
@@ -40,7 +39,8 @@ void setup(){
   Platforms.add(new Platform(11, 93, 111, 87, ElementType.DEFAULT));
   Platforms.add(new Platform(97, 154, 205, 25, ElementType.DEFAULT));
   Platforms.add(new Platform(185, 54, 305, 16, ElementType.DEFAULT));
-  
+  d1 = new Door(364, 447, 30, 40);    
+  d2 = new Door(438, 14, 30, 40);
   /**
   Adding "r" to trigger a reset, since both Characters store the current keys pressed
   Will try to make a global container later to avoid adding "r" to the Character hashmaps
@@ -61,7 +61,6 @@ void setup(){
   map.put(KeyEvent.VK_D, Action.Right);
 
   Watergirl = new Character(50, 470, ElementType.WATER, map, controller);
-
 }
 
 void draw(){
@@ -84,15 +83,13 @@ void draw(){
     reset();
   }
   
-
   for(Platform p : Platforms){
     Watergirl.collisions.add(Watergirl.rectangleCollisions(p));
   }
   Watergirl.update();
   Watergirl.collisions = new HashSet<CollisionType>();
   
-  Fireboy.display();
-  Watergirl.display();
+
 
   // Watergirl death
   if(Watergirl.actions.contains(Action.Reset) ){
@@ -102,7 +99,13 @@ void draw(){
   for(Platform p : Platforms){
     p.display();
   }
+  d1.update(Fireboy.isTouchingDoor(d1) || Watergirl.isTouchingDoor(d1));
+  d2.update(Fireboy.isTouchingDoor(d2) || Watergirl.isTouchingDoor(d2));
   
+  d1.display();
+  d2.display();
+  Fireboy.display();
+  Watergirl.display();
 }
 
 void reset(){
