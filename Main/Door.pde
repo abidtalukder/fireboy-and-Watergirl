@@ -8,7 +8,7 @@ class Door{
     this.w = w; 
     this.h = h;
     t = 0;
-    numFrames = 15; // Higher number, slower speed, lower number, higher speed
+    numFrames = 15; // Higher number => slower speed // lower number => higher speed
     this.type = type;
   }
   
@@ -16,7 +16,6 @@ class Door{
     if(isTouchingPlayer){
       if(t == numFrames && !isOpen){
         isOpen = true;
-        // Have to figure out how to terminate the game
       }
       else if(!isOpen){
         this.t = this.t + 1;

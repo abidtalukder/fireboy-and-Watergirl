@@ -21,9 +21,6 @@ HashSet keysPressed = new HashSet();
 ArrayList<Platform> Platforms;
 Door d1, d2;
 boolean haveWon;
-Button b1;
-// MovingPlatform mp1;
-
 
 void setup(){
   size(500, 500);
@@ -34,7 +31,7 @@ void setup(){
   Platforms = new ArrayList<Platform>();
   Platforms.add(new Platform(0, 487, 511, 18, ElementType.DEFAULT));
   Platforms.add(new Platform(0, 0, 20, 500, ElementType.DEFAULT));
-  Platforms.add(new Platform(2, 11, 519, -35, ElementType.DEFAULT));
+  Platforms.add(new Platform(2, 0, 519, 10, ElementType.DEFAULT));
   Platforms.add(new Platform(485, 5, 116, 507, ElementType.DEFAULT));
   Platforms.add(new Platform(7, 412, 174, 20, ElementType.DEFAULT));
   Platforms.add(new Platform(12, 324, 311, 19, ElementType.DEFAULT));
@@ -55,8 +52,6 @@ void setup(){
   
   d1 = new Door(400, 15, 30, 40, ElementType.FIRE);    
   d2 = new Door(440, 15, 30, 40, ElementType.WATER);
-  b1 = new Button(110, 310, 30, 15);
-  // mp1 = new MovingPlatform(35, 250, 65, 15, 50);
   
   map.put(KeyEvent.VK_R, Action.Reset);
 
@@ -68,12 +63,25 @@ void setup(){
 
   map = new HashMap<Integer, Action>();
 
-
   map.put(KeyEvent.VK_W, Action.Up);
   map.put(KeyEvent.VK_A, Action.Left);
   map.put(KeyEvent.VK_D, Action.Right);
 
   Watergirl = new Character(37, 381, ElementType.WATER, map, controller);
+}
+
+void characterCollisions(Character Player){
+  for(Platform p : Platforms){
+    CollisionType collision = Player.rectangleCollisions(p);
+    if(collision != CollisionType.None){
+      if((Player.type == ElementType.FIRE && p.type == ElementType.WATER) || (Player.type == ElementType.WATER && p.type == ElementType.FIRE) || p.type == ElementType.POISON){
+        reset();
+      }
+    }
+    Player.collisions.add(collision);
+  }
+  Player.update();
+  Player.collisions = new HashSet<CollisionType>();
 }
 
 void draw(){
@@ -86,41 +94,17 @@ void draw(){
     controller.keyRemove(KeyEvent.VK_R);
   }
   
-  for(Platform p : Platforms){
-    CollisionType collision = Fireboy.rectangleCollisions(p);
-    if(collision != CollisionType.None && (p.type == ElementType.WATER || p.type == ElementType.POISON)){
-      reset();
+    characterCollisions(Fireboy);
+    characterCollisions(Watergirl);
+
+    d1.update(Fireboy.isTouchingDoor(d1));
+    d2.update(Watergirl.isTouchingDoor(d2));
+
+    for(Platform p : Platforms){
+      p.display();
     }
-    Fireboy.collisions.add(collision);
-  }
-  // Fireboy.collisions.add(Fireboy.rectangleCollisions(mp1));
-  Fireboy.update();
-  Fireboy.collisions = new HashSet<CollisionType>(); // Resetting the collisions
-  
-  for(Platform p : Platforms){
-     CollisionType collision = Watergirl.rectangleCollisions(p);
-     if(collision != CollisionType.None && (p.type == ElementType.FIRE || p.type == ElementType.POISON)){
-      reset();
-    }
-    Watergirl.collisions.add(collision);
-  }
-  Watergirl.update();
-  // Watergirl.collisions.add(Watergirl.rectangleCollisions(mp1));
-  Watergirl.collisions = new HashSet<CollisionType>();
-  
-  for(Platform p : Platforms){
-    p.display();
-  }
-  d1.update(Fireboy.isTouchingDoor(d1));
-  d2.update(Watergirl.isTouchingDoor(d2));
-  
-  b1.update(Fireboy.isTouchingButton(b1) || Watergirl.isTouchingButton(b1));
-  // mp1.update(b1.isPushed);
-  
     d1.display();
     d2.display();
-    b1.display();
-    // mp1.display();
     Fireboy.display();
     Watergirl.display();
     haveWon = d1.isOpen && d2.isOpen;
@@ -143,8 +127,4 @@ void keyPressed(){
 
 void keyReleased(){
   controller.keyRemove(keyCode);
-}
-
-void mousePressed(){
-  println(mouseX + ", " + mouseY);
 }

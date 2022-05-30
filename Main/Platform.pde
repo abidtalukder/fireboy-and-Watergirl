@@ -9,10 +9,6 @@ class Platform{
     this.type = type;
   }
   
-  //Rectangle getHurtBox(){
-  //  return new Rectangle( (int) x, (int) y, (int) w, (int) h );
-  //}
-
   void display(){
     switch(type){
       case DEFAULT:
