@@ -8,4 +8,9 @@ class Box {
     this.w = w;
     this.h = h;
   }
+
+  void display() {
+    fill(204, 102, 0);
+    rect(x, y, w, h);
+  }
 }
