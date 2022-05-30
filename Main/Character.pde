@@ -20,9 +20,11 @@ class Character{
     this.y = y;
     this.w = w;
     this.h = h;
+    
     if(type != ElementType.FIRE && type != ElementType.WATER){
       throw new RuntimeException("Character Element Type is invalid");
     }
+    
     this.type = type;
 
     vx = 0;
@@ -123,6 +125,7 @@ class Character{
      vy = 0;
    }
   }
+  
   CollisionType rectangleCollisions(Platform p){
   
   // Rectangular collision occurs when the components distances between the centers
