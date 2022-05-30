@@ -21,6 +21,9 @@ HashSet keysPressed = new HashSet();
 ArrayList<Platform> Platforms;
 Door d1, d2;
 boolean haveWon;
+Button b1;
+// MovingPlatform mp1;
+
 
 void setup(){
   size(500, 500);
@@ -35,11 +38,11 @@ void setup(){
   Platforms.add(new Platform(485, 5, 116, 507, ElementType.DEFAULT));
   Platforms.add(new Platform(7, 412, 174, 20, ElementType.DEFAULT));
   Platforms.add(new Platform(12, 324, 311, 19, ElementType.DEFAULT));
-  Platforms.add(new Platform(318, 325, 20, 72, ElementType.DEFAULT));
-  Platforms.add(new Platform(322, 381, 102, 17, ElementType.DEFAULT));
+  Platforms.add(new Platform(318, 324, 20, 69, ElementType.DEFAULT));
+  Platforms.add(new Platform(322, 376, 102, 17, ElementType.DEFAULT));
   Platforms.add(new Platform(112, 242, 379, 21, ElementType.DEFAULT));
   Platforms.add(new Platform(11, 93, 111, 87, ElementType.DEFAULT));
-  Platforms.add(new Platform(90, 154, 205, 25, ElementType.DEFAULT));
+  Platforms.add(new Platform(90, 155, 205, 25, ElementType.DEFAULT));
   Platforms.add(new Platform(185, 54, 305, 16, ElementType.DEFAULT));
   Platforms.add(new Platform(450, 450, 500, 500, ElementType.DEFAULT));
   
@@ -52,14 +55,16 @@ void setup(){
   
   d1 = new Door(400, 15, 30, 40, ElementType.FIRE);    
   d2 = new Door(440, 15, 30, 40, ElementType.WATER);
-
+  b1 = new Button(110, 310, 30, 15);
+  // mp1 = new MovingPlatform(35, 250, 65, 15, 50);
+  
   map.put(KeyEvent.VK_R, Action.Reset);
 
   map.put(KeyEvent.VK_UP, Action.Up);
   map.put(KeyEvent.VK_LEFT, Action.Left);
   map.put(KeyEvent.VK_RIGHT, Action.Right);
 
-  Fireboy = new Character(20, 470, ElementType.FIRE, map, controller);
+  Fireboy = new Character(37, 470, ElementType.FIRE, map, controller);
 
   map = new HashMap<Integer, Action>();
 
@@ -88,6 +93,7 @@ void draw(){
     }
     Fireboy.collisions.add(collision);
   }
+  // Fireboy.collisions.add(Fireboy.rectangleCollisions(mp1));
   Fireboy.update();
   Fireboy.collisions = new HashSet<CollisionType>(); // Resetting the collisions
   
@@ -99,6 +105,7 @@ void draw(){
     Watergirl.collisions.add(collision);
   }
   Watergirl.update();
+  // Watergirl.collisions.add(Watergirl.rectangleCollisions(mp1));
   Watergirl.collisions = new HashSet<CollisionType>();
   
   for(Platform p : Platforms){
@@ -107,8 +114,13 @@ void draw(){
   d1.update(Fireboy.isTouchingDoor(d1));
   d2.update(Watergirl.isTouchingDoor(d2));
   
+  b1.update(Fireboy.isTouchingButton(b1) || Watergirl.isTouchingButton(b1));
+  // mp1.update(b1.isPushed);
+  
     d1.display();
     d2.display();
+    b1.display();
+    // mp1.display();
     Fireboy.display();
     Watergirl.display();
     haveWon = d1.isOpen && d2.isOpen;
@@ -131,4 +143,8 @@ void keyPressed(){
 
 void keyReleased(){
   controller.keyRemove(keyCode);
+}
+
+void mousePressed(){
+  println(mouseX + ", " + mouseY);
 }
