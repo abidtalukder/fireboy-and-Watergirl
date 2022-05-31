@@ -8,7 +8,7 @@ class Box {
 
   boolean isOnGround = true;
   HashSet<CollisionType> collisions;
-  
+
   boolean fire, water = false;
 
   public Box(int x, int y, int w, int h) {
@@ -16,30 +16,28 @@ class Box {
     this.y = y;
     this.w = w;
     this.h = h;
-    
   }
 
   void display() {
     fill(204, 102, 0);
     rect(x, y, w, h);
   }
-  
-  void checkCollisions(){
-  
+
+  void checkCollisions() {
+
     collisions.clear();
-    
+
     CollisionType f = rectangleCollisions(Fireboy);
     CollisionType w = rectangleCollisions(Watergirl);
-    
+
     if (f != CollisionType.None) {
-    fire = true;
-    collisions.add(f);
+      fire = true;
+      collisions.add(f);
     }
     if (w != CollisionType.None) {
-    water = true;
-    collisions.add(w);
+      water = true;
+      collisions.add(w);
     }
-  
   }
 
   void update() {
@@ -56,12 +54,36 @@ class Box {
       ay -= g; // Normal force cancels out gravity force
       vy = 0;
     }
-    
-    if (collisions.contains(CollisionType.Left) || collisions.contains(CollisionType.Right)) {
-      
-      
-    
-    } 
+
+    if (water && !fire) {
+
+      if (collisions.contains(CollisionType.Left) || collisions.contains(CollisionType.Right)) {
+
+        vx = Watergirl.vx;
+      }
+    } else if (fire && !water) {
+
+      if (collisions.contains(CollisionType.Left) || collisions.contains(CollisionType.Right)) {
+
+        vx = Fireboy.vx;
+      }
+    } else if (fire && water) {
+
+      if (collisions.contains(CollisionType.Left) && collisions.contains(CollisionType.Right)) {
+
+        vx = Fireboy.vx - Watergirl.vx;
+      } else if (collisions.contains(CollisionType.Right) && !collisions.contains(CollisionType.Left) && collisions.contains(CollisionType.Top) && collisions.contains(CollisionType.Bottom)) {
+
+        vx = Fireboy.vx + Watergirl.vx;
+      } else if (collisions.contains(CollisionType.Left) && !collisions.contains(CollisionType.Right) && collisions.contains(CollisionType.Top) && collisions.contains(CollisionType.Bottom)) {
+
+        vx = Fireboy.vx + Watergirl.vx;
+      }
+    } else {
+
+      vx *= friction;
+    }
+
 
     friction = 1;
     if (collisions.size() == 0) {
@@ -94,7 +116,7 @@ class Box {
 
 
 
-  
+
 
   void checkBoundaries() {
     if (x < 0) {
