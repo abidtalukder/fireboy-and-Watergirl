@@ -3,7 +3,7 @@ import java.util.HashSet;
 import java.awt.event.KeyEvent;
 
 enum ElementType{
-  DEFAULT, FIRE, WATER, POISON;
+  DEFAULT, FIRE, WATER, POISON, ELEVATOR;
 }
 
 enum Action{

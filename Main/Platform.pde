@@ -1,5 +1,7 @@
 class Platform{
   int x, y, w, h;
+  
+  int range;
   ElementType type;
   public Platform(int x, int y, int w, int h, ElementType type){
     this.x = x;
@@ -7,6 +9,16 @@ class Platform{
     this.w = w;
     this.h = h;
     this.type = type;
+    range = 0;
+  }
+  
+  public Platform(int x, int y, int r) {
+    
+    this.x = x;
+    this.y = y;
+    
+  
+  
   }
   
   //Rectangle getHurtBox(){
@@ -27,8 +39,23 @@ class Platform{
       case POISON:
         fill(77, 181, 96);
         break;
+      case ELEVATOR:
+        fill(128,128,128);
+        break;
     }
 
     rect(x, y, w, h);
+  }
+  
+  
+  void move() {
+  
+    if (type == ElementType.ELEVATOR){
+    
+    
+    
+    }
+  
+  
   }
 }
