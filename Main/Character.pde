@@ -11,6 +11,7 @@ class Character{
   HashMap<Integer, Action> map;
   HashSet<Action> actions;
   HashSet<CollisionType> collisions;
+  HashSet<CollisionType> boxCollisions = new HashSet<CollisionType>();
   public Character(int x, int y, ElementType type, HashMap<Integer, Action> map, Controller controller){
     this(x, y, 20, 30, type, map, controller);
   }
@@ -73,7 +74,7 @@ class Character{
        ax += 0.2;
     }
 
-    if(y + h >= height || collisions.contains(CollisionType.Bottom)){
+    if(y + h >= height || collisions.contains(CollisionType.Bottom) || boxCollisions.contains(CollisionType.Bottom)){
       ay -= g; // Normal force cancels out gravity force
       vy = 0;
       if(actions.contains(Action.Up)){
@@ -124,6 +125,18 @@ class Character{
      y = height - h;
      vy = 0;
    }
+  }
+  
+  void checkBoxCollisions() {
+  
+  boxCollisions.clear();
+
+    for (Box p : Boxes) {
+      CollisionType temp = rectangleCollisions(p);
+      if (temp != CollisionType.None) {
+        boxCollisions.add(temp);
+      }
+    }
   }
   
   CollisionType rectangleCollisions(Platform p){
