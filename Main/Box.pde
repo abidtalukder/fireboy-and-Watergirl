@@ -1,7 +1,7 @@
 class Box {
 
   int x, y, w, h;
-  double vx,vy,ax,ay = 0;
+  float vx,vy,ax,ay = 0;
   
   boolean isOnGround = true;
 
@@ -20,13 +20,27 @@ class Box {
   
   void update(){
   
-    vy += ay;
-    vx += ax;
+    y += vy;
+    x += vx;
     vx *= ax;
     vy *= ay;
     
     checkBoundaries();
+    gravity();
     
+    
+    
+  }
+  
+  void gravity(){
+  
+  if (!isOnGround){
+  ay = 0.4;
+  
+  } else ay = 0;
+  
+  if (vy <= 0.5 && vy >= -0.5 && isOnGround) vy = 0;
+  
   }
   
   void checkBoundaries(){
