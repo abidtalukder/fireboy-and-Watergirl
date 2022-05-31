@@ -67,6 +67,13 @@ class Box {
    }
   }
   
+  boolean isTouchingButton(Button b){
+      return (this.x + this.w >= b.x &&    
+      this.x <= b.x + b.w &&    
+      this.y + this.h >= b.y &&    
+      this.y <= b.y + b.h);     
+  }
+  
   CollisionType rectangleCollisions(Platform p){
   
   // Rectangular collision occurs when the components distances between the centers
