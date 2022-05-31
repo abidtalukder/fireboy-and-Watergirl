@@ -73,6 +73,8 @@ class Character{
     if(actions.contains(Action.Right)){
        ax += 0.2;
     }
+    
+    checkBoxCollisions();
 
     if(y + h >= height || collisions.contains(CollisionType.Bottom) || boxCollisions.contains(CollisionType.Bottom)){
       ay -= g; // Normal force cancels out gravity force
