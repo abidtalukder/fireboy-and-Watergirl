@@ -8,17 +8,38 @@ class Box {
 
   boolean isOnGround = true;
   HashSet<CollisionType> collisions;
+  
+  boolean fire, water = false;
 
   public Box(int x, int y, int w, int h) {
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
+    
   }
 
   void display() {
     fill(204, 102, 0);
     rect(x, y, w, h);
+  }
+  
+  void checkCollisions(){
+  
+    collisions.clear();
+    
+    CollisionType f = rectangleCollisions(Fireboy);
+    CollisionType w = rectangleCollisions(Watergirl);
+    
+    if (f != CollisionType.None) {
+    fire = true;
+    collisions.add(f);
+    }
+    if (w != CollisionType.None) {
+    water = true;
+    collisions.add(w);
+    }
+  
   }
 
   void update() {
@@ -35,6 +56,12 @@ class Box {
       ay -= g; // Normal force cancels out gravity force
       vy = 0;
     }
+    
+    if (collisions.contains(CollisionType.Left) || collisions.contains(CollisionType.Right)) {
+      
+      
+    
+    } 
 
     friction = 1;
     if (collisions.size() == 0) {
@@ -67,8 +94,7 @@ class Box {
 
 
 
-  void friction() {
-  }
+  
 
   void checkBoundaries() {
     if (x < 0) {
