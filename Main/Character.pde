@@ -62,7 +62,7 @@ class Character{
   }
 
   void update(){
-     actions = currActions();
+    actions = currActions();
     ax = 0;
     ay = g; // By default, set gravity to g
 
