@@ -42,15 +42,26 @@ class Box {
   }
   
   void checkPlatformCollisions(){
+    
+    platformCollisions.clear();
   
     for(Platform p : Platforms) {
-      platformCollisions.add(rectangleCollisions(p));
+      CollisionType temp = rectangleCollisions(p);
+      if (temp != CollisionType.None) {
+        platformCollisions.add(temp);
+      }
     }
+    
+    System.out.println(platformCollisions);
   
   }
-
+  
   void update() {
     //System.out.println(rectangleCollisions(Fireboy));
+    ax = 0;
+    ay = g; // By default, set gravity to g
+    
+    checkPlatformCollisions();
 
     //y += vy;
     //x += vx;
@@ -59,9 +70,16 @@ class Box {
 
     //checkBoundaries();
     //gravity();
+    
+    //System.out.println(rectangleCollisions(Platforms.get(0)));
+    
 
-    if (y + h >= height || collisions.contains(CollisionType.Bottom)) {
-      ay -= g; // Normal force cancels out gravity force
+    if (y + h >= height || platformCollisions.contains(CollisionType.Bottom)) {
+    //  for (int i = 0; i < platformCollisions.size(); i++) {
+    //  System.out.print(i);
+      
+    //}
+      ay = 0; // Normal force cancels out gravity force
       vy = 0;
     }
     
@@ -165,45 +183,46 @@ class Box {
       this.y <= b.y + b.h);
   }
 
-  CollisionType rectangleCollisions(Platform p) {
-
-    // Rectangular collision occurs when the components distances between the centers
-    // is less than the the sum of half the widths and the sum of half the heights
-
-
-    // Displacements between the centers
-    // Identify the center coordinates (left top translated by halfWidth, halfHeight) and subtract
-
-    float dx = (this.x + this.w / 2.0) - (p.x + p.w / 2.0);
-    float dy = (this.y + this.h / 2.0) - (p.y + p.h / 2.0);
-
-    // The combined half dimensions are essentially component "radii"
-    float combinedHalfWidths = (this.w / 2.0) + (p.w / 2.0);
-    float combinedHalfHeights = (this.h / 2.0) + (p.h / 2.0);
-
-    if (abs(dx) < combinedHalfWidths && abs(dy) < combinedHalfHeights) {
-      // Overlap is "signed" here (positive / negative) for simplicity
-      float overlapX = combinedHalfWidths - abs(dx);
-      float overlapY = combinedHalfHeights - abs(dy);
-      if (overlapX >= overlapY) {
-        if (dy > 0) {
-          this.y += overlapY;
-          return CollisionType.Top;
-        }
-
-        this.y -= overlapY;
-        return CollisionType.Bottom;
+  CollisionType rectangleCollisions(Platform p){
+  
+  // Rectangular collision occurs when the components distances between the centers
+  // is less than the the sum of half the widths and the sum of half the heights
+  
+  
+  // Displacements between the centers
+  // Identify the center coordinates (left top translated by halfWidth, halfHeight) and subtract
+  
+  float dx = (this.x + this.w / 2.0) - (p.x + p.w / 2.0);
+  float dy = (this.y + this.h / 2.0) - (p.y + p.h / 2.0);
+  
+  // The combined half dimensions are essentially component "radii"
+  float combinedHalfWidths = (this.w / 2.0) + (p.w / 2.0);
+  float combinedHalfHeights = (this.h / 2.0) + (p.h / 2.0);
+  
+  if(abs(dx) < combinedHalfWidths && abs(dy) < combinedHalfHeights){
+    // Overlap is "signed" here (positive / negative) for simplicity
+    float overlapX = combinedHalfWidths - abs(dx);
+    float overlapY = combinedHalfHeights - abs(dy);
+    if(overlapX >= overlapY){
+      if(dy > 0){
+        this.y += overlapY;
+        return CollisionType.Top;
       }
-
-      if (dx > 0) {
-        this.x += overlapX;
-        return CollisionType.Right;
-      }
-      this.x -= overlapX;
-      return CollisionType.Left;
+      
+      this.y -= overlapY;
+      return CollisionType.Bottom;
     }
-    return CollisionType.None;
+    
+    if(dx > 0){
+      this.x += overlapX;
+      return CollisionType.Right;
+    }
+    this.x -= overlapX;
+    return CollisionType.Left;
+    
   }
+  return CollisionType.None;
+}
 
   CollisionType rectangleCollisions(Character p) {
 
