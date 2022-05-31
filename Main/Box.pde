@@ -8,6 +8,7 @@ class Box {
 
   boolean isOnGround = true;
   HashSet<CollisionType> collisions = new HashSet<CollisionType>();
+  HashSet<CollisionType> platformCollisions = new HashSet<CollisionType>();
 
   boolean fire, water = false;
 
@@ -38,6 +39,14 @@ class Box {
       water = true;
       collisions.add(w);
     }
+  }
+  
+  void checkPlatformCollisions(){
+  
+    for(Platform p : Platforms) {
+      platformCollisions.add(rectangleCollisions(p));
+    }
+  
   }
 
   void update() {
