@@ -19,6 +19,7 @@ Character Fireboy, Watergirl;
 Controller controller;
 HashSet keysPressed = new HashSet();
 ArrayList<Platform> Platforms;
+ArrayList<Box> Boxes;
 Door d1, d2;
 boolean haveWon;
 Button b1;
@@ -32,6 +33,9 @@ void setup(){
   
   HashMap<Integer, Action> map = new HashMap<Integer, Action>();
   Platforms = new ArrayList<Platform>();
+  Boxes = new ArrayList<Box>();
+  Boxes.add(new Box(50,300, 30, 30));
+  
   Platforms.add(new Platform(0, 487, 511, 18, ElementType.DEFAULT));
   Platforms.add(new Platform(0, 0, 20, 500, ElementType.DEFAULT));
   Platforms.add(new Platform(2, 11, 519, -35, ElementType.DEFAULT));
@@ -74,6 +78,7 @@ void setup(){
   map.put(KeyEvent.VK_D, Action.Right);
 
   Watergirl = new Character(37, 381, ElementType.WATER, map, controller);
+  
 }
 
 void draw(){
@@ -121,6 +126,8 @@ void draw(){
     d2.display();
     b1.display();
     // mp1.display();
+    Boxes.get(0).update();
+    Boxes.get(0).display();
     Fireboy.display();
     Watergirl.display();
     haveWon = d1.isOpen && d2.isOpen;

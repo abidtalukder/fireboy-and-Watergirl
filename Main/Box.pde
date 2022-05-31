@@ -7,7 +7,7 @@ class Box {
   float speedLimit = 3; // Speed Limit
 
   boolean isOnGround = true;
-  HashSet<CollisionType> collisions;
+  HashSet<CollisionType> collisions = new HashSet<CollisionType>();
 
   boolean fire, water = false;
 
@@ -41,6 +41,7 @@ class Box {
   }
 
   void update() {
+    //System.out.println(rectangleCollisions(Fireboy));
 
     //y += vy;
     //x += vx;
@@ -54,35 +55,9 @@ class Box {
       ay -= g; // Normal force cancels out gravity force
       vy = 0;
     }
-
-    if (water && !fire) {
-
-      if (collisions.contains(CollisionType.Left) || collisions.contains(CollisionType.Right)) {
-
-        vx = Watergirl.vx;
-      }
-    } else if (fire && !water) {
-
-      if (collisions.contains(CollisionType.Left) || collisions.contains(CollisionType.Right)) {
-
-        vx = Fireboy.vx;
-      }
-    } else if (fire && water) {
-
-      if (collisions.contains(CollisionType.Left) && collisions.contains(CollisionType.Right)) {
-
-        vx = Fireboy.vx - Watergirl.vx;
-      } else if (collisions.contains(CollisionType.Right) && !collisions.contains(CollisionType.Left) && collisions.contains(CollisionType.Top) && collisions.contains(CollisionType.Bottom)) {
-
-        vx = Fireboy.vx + Watergirl.vx;
-      } else if (collisions.contains(CollisionType.Left) && !collisions.contains(CollisionType.Right) && collisions.contains(CollisionType.Top) && collisions.contains(CollisionType.Bottom)) {
-
-        vx = Fireboy.vx + Watergirl.vx;
-      }
-    } else {
-
-      vx *= friction;
-    }
+    
+    checkCollisions();
+    collisionMovement();
 
 
     friction = 1;
@@ -112,6 +87,40 @@ class Box {
     if (!isOnGround) {
       ay = 0.4;
     } else ay = 0;
+  }
+  
+  
+  void collisionMovement() {
+    
+  if (water && !fire) {
+
+      if (collisions.contains(CollisionType.Left) || collisions.contains(CollisionType.Right)) {
+
+        vx = Watergirl.vx;
+      }
+    } else if (fire && !water) {
+
+      if (collisions.contains(CollisionType.Left) || collisions.contains(CollisionType.Right)) {
+
+        vx = Fireboy.vx;
+      }
+    } else if (fire && water) {
+
+      if (collisions.contains(CollisionType.Left) && collisions.contains(CollisionType.Right)) {
+
+        vx = Fireboy.vx - Watergirl.vx;
+      } else if (collisions.contains(CollisionType.Right) && !collisions.contains(CollisionType.Left) && collisions.contains(CollisionType.Top) && collisions.contains(CollisionType.Bottom)) {
+
+        vx = Fireboy.vx + Watergirl.vx;
+      } else if (collisions.contains(CollisionType.Left) && !collisions.contains(CollisionType.Right) && collisions.contains(CollisionType.Top) && collisions.contains(CollisionType.Bottom)) {
+
+        vx = Fireboy.vx + Watergirl.vx;
+      }
+    } else {
+
+      vx *= 0.95;
+    }
+  
   }
 
 
