@@ -34,11 +34,13 @@ class Box {
     if (f != CollisionType.None) {
       fire = true;
       collisions.add(f);
-    }
+    } else fire = false;
+    
     if (w != CollisionType.None) {
       water = true;
       collisions.add(w);
-    }
+    } else water = false;
+    
   }
   
   void checkPlatformCollisions(){
@@ -121,15 +123,28 @@ class Box {
     
   if (water && !fire) {
 
-      if (collisions.contains(CollisionType.Left) || collisions.contains(CollisionType.Right)) {
+      if (collisions.contains(CollisionType.Left)) {
 
-        vx = Watergirl.vx;
+       if (Watergirl.vx > 0) vx = Watergirl.vx;
+          else vx *= 0.5;
+      } else if (collisions.contains(CollisionType.Right)) {
+      
+          if (Watergirl.vx < 0) vx = Watergirl.vx;
+          else vx *= 0.95;
+      
       }
-    } else if (fire && !water) {
+    }
+     else if (fire && !water) {
 
-      if (collisions.contains(CollisionType.Left) || collisions.contains(CollisionType.Right)) {
+      if (collisions.contains(CollisionType.Left)) {
 
-        vx = Fireboy.vx;
+        if (Fireboy.vx > 0) vx = Fireboy.vx;
+          else vx *= 0.95;
+      } else if (collisions.contains(CollisionType.Right)) {
+      
+          if (Fireboy.vx < 0) vx = Fireboy.vx;
+          else vx *= 0.5;
+        
       }
     } else if (fire && water) {
 
