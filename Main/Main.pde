@@ -19,6 +19,7 @@ Character Fireboy, Watergirl;
 Controller controller;
 HashSet keysPressed = new HashSet();
 ArrayList<Platform> Platforms;
+ArrayList<Gem> Gems;
 Door d1, d2;
 boolean haveWon;
 Button b1, b2;
@@ -31,6 +32,8 @@ void setup(){
   
   HashMap<Integer, Action> map = new HashMap<Integer, Action>();
   Platforms = new ArrayList<Platform>();
+  Gems = new ArrayList<Gem>();
+  
   Platforms.add(new Platform(0, 487, 511, 18, ElementType.DEFAULT));
   Platforms.add(new Platform(0, 0, 20, 500, ElementType.DEFAULT));
   Platforms.add(new Platform(2, 0, 519, 10, ElementType.DEFAULT));
@@ -51,6 +54,10 @@ void setup(){
   Platforms.add(new Platform(250, 486, 50, 10, ElementType.WATER));
   Platforms.add(new Platform(200, 323, 50, 10, ElementType.POISON));
   
+  Gems.add(new Gem(260, 470, 10, 5, ElementType.WATER));
+  Gems.add(new Gem(280, 470, 10, 5, ElementType.WATER));
+  Gems.add(new Gem(360, 470, 10, 5, ElementType.FIRE));
+  Gems.add(new Gem(380, 470, 10, 5, ElementType.FIRE));
   
   d1 = new Door(400, 15, 30, 40, ElementType.FIRE);    
   d2 = new Door(440, 15, 30, 40, ElementType.WATER);
@@ -85,6 +92,15 @@ void characterCollisions(Character Player){
     }
     Player.collisions.add(collision);
   }
+  Gem removed = null;
+  for(Gem g : Gems){
+    if(Player.type == g.type && Player.isTouchingGem(g)){
+      removed = g; // This is to avoid ConcurrentModificationException
+    }
+  }
+  if(removed != null){
+    Gems.remove(removed);
+  }
   Player.collisions.add(Player.rectangleCollisions(mp1));
   Player.update();
   // Player.collisions = new HashSet<CollisionType>();
@@ -116,6 +132,10 @@ void draw(){
     for(Platform p : Platforms){
       p.display();
     }
+    for(Gem g : Gems){
+      g.display();
+    }
+    
     d1.display();
     d2.display();
     b1.display();

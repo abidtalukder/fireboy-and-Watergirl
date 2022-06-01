@@ -187,4 +187,11 @@ class Character{
       this.y + this.h >= b.y &&    
       this.y <= b.y + b.h);     
   }
+  boolean isTouchingGem(Gem g){
+      return (this.x + this.w >= g.x &&    
+      this.x <= g.x + g.w &&    
+      this.y + this.h >= g.y &&    
+      this.y <= g.y + g.h);     
+  }
+  
 }
