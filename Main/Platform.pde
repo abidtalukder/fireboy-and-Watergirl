@@ -8,7 +8,7 @@ class Platform{
     this.h = h;
     this.type = type;
   }
-  
+
   void display(){
     switch(type){
       case DEFAULT:

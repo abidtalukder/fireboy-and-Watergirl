@@ -140,7 +140,39 @@ class Character{
   return CollisionType.None;
 }
 
-
+ CollisionType rectangleCollisions(MovingPlatform p){
+  
+  float dx = (this.x + this.w / 2.0) - (p.x + p.w / 2.0);
+  float dy = (this.y + this.h / 2.0) - (p.y + p.h / 2.0);
+  
+  // The combined half dimensions are essentially component "radii"
+  float combinedHalfWidths = (this.w / 2.0) + (p.w / 2.0);
+  float combinedHalfHeights = (this.h / 2.0) + (p.h / 2.0);
+  
+  if(abs(dx) < combinedHalfWidths && abs(dy) < combinedHalfHeights){
+    // Overlap is "signed" here (positive / negative) for simplicity
+    float overlapX = combinedHalfWidths - abs(dx);
+    float overlapY = combinedHalfHeights - abs(dy);
+    if(overlapX >= overlapY){
+      if(dy > 0){
+        this.y += overlapY;
+        return CollisionType.Top;
+      }
+      
+      this.y -= overlapY;
+      return CollisionType.Bottom;
+    }
+    
+    if(dx > 0){
+      this.x += overlapX;
+      return CollisionType.Right;
+    }
+    this.x -= overlapX;
+    return CollisionType.Left;
+    
+  }
+  return CollisionType.None;
+}
 
   boolean isTouchingDoor(Door d){
       return (this.x + this.w >= d.x &&    
@@ -149,4 +181,10 @@ class Character{
       this.y <= d.y + d.h);     
   }
   
+  boolean isTouchingButton(Button b){
+      return (this.x + this.w >= b.x &&    
+      this.x <= b.x + b.w &&    
+      this.y + this.h >= b.y &&    
+      this.y <= b.y + b.h);     
+  }
 }
