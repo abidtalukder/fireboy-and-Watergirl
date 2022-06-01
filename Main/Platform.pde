@@ -5,7 +5,7 @@ class Platform{
   ElementType type;
   int wait = 0;
   int counter = 0;
-  Button activate = null;
+  Button activate;
   public Platform(int x, int y, int w, int h, ElementType type){
     this.x = x;
     this.y = y;
@@ -13,6 +13,7 @@ class Platform{
     this.h = h;
     this.type = type;
     range = 0;
+    activate = null;
   }
   
   public Platform(int x, int y, int r, Button a) {
@@ -24,6 +25,7 @@ class Platform{
     range = r;
     activate = a;
     type = ElementType.ELEVATOR;
+    
     
   }
   
@@ -61,6 +63,8 @@ class Platform{
  void move() {
   
     if (type == ElementType.ELEVATOR){
+      
+      
     
     if (activate != null && activate.isPushed){
       System.out.println("pressed");
@@ -72,14 +76,14 @@ class Platform{
      
      if (counter < range) {
      counter ++;
-     y++;
+     y--;
      }
     
     }
     
     } else {
     
-      wait --;
+      wait ++;
       
       if (wait >= 10){
       
@@ -87,7 +91,7 @@ class Platform{
         
         
         if (counter != 0){
-        y--;
+        y++;
         counter --;
         
         
