@@ -2,11 +2,14 @@ class Door{
   int x, y, w, h, t, numFrames;
   boolean isOpen;
   ElementType type;
+  Rectangle Hitbox;
+  
   public Door(int x, int y, int w, int h, ElementType type){
     this.x = x;
     this.y = y;
     this.w = w; 
     this.h = h;
+    Hitbox = new Rectangle(x, y, w, h);
     t = 0;
     numFrames = 15; // Higher number => slower speed // lower number => higher speed
     this.type = type;

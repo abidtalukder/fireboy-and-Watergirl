@@ -7,7 +7,7 @@ class MovingPlatform{
     this.h = h;
     this.yDisp = yDisp;
     t = 0;
-    numIterations = 20;
+    numIterations = 30;
   }
   
   

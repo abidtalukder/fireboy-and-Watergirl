@@ -11,6 +11,8 @@ class Character{
   HashMap<Integer, Action> map;
   HashSet<Action> actions;
   HashSet<CollisionType> collisions;
+  Rectangle Hitbox;
+  
   public Character(int x, int y, ElementType type, HashMap<Integer, Action> map, Controller controller){
     this(x, y, 20, 30, type, map, controller);
   }
@@ -20,6 +22,8 @@ class Character{
     this.y = y;
     this.w = w;
     this.h = h;
+    Hitbox = new Rectangle(x, y, w, h);
+    
     if(type != ElementType.FIRE && type != ElementType.WATER){
       throw new RuntimeException("Character Element Type is invalid");
     }
@@ -56,11 +60,12 @@ class Character{
       fill(0, 0, 255);
     }
 
-    rect(x, y, w, h);
+    // rect(x, y, w, h);
+    Hitbox.display();
   }
 
   void update(){
-     actions = currActions();
+    actions = currActions();
     ax = 0;
     ay = g; // By default, set gravity to g
 
@@ -97,18 +102,11 @@ class Character{
     }
     x += vx;
     y += vy;
+    Hitbox = new Rectangle((int) x, (int) y, (int) w, (int) h);
   }
 
   CollisionType rectangleCollisions(Platform p){
-  
-  // Rectangular collision occurs when the components distances between the centers
-  // is less than the the sum of half the widths and the sum of half the heights
-  
-  
-  // Displacements between the centers
-  // Identify the center coordinates (left top translated by halfWidth, halfHeight) and subtract
-  
-  float dx = (this.x + this.w / 2.0) - (p.x + p.w / 2.0);
+   float dx = (this.x + this.w / 2.0) - (p.x + p.w / 2.0);
   float dy = (this.y + this.h / 2.0) - (p.y + p.h / 2.0);
   
   // The combined half dimensions are essentially component "radii"
@@ -138,7 +136,9 @@ class Character{
     
   }
   return CollisionType.None;
+  
 }
+
 
  CollisionType rectangleCollisions(MovingPlatform p){
   
@@ -175,23 +175,14 @@ class Character{
 }
 
   boolean isTouchingDoor(Door d){
-      return (this.x + this.w >= d.x &&    
-      this.x <= d.x + d.w &&    
-      this.y + this.h >= d.y &&    
-      this.y <= d.y + d.h);     
+     return Hitbox.isTouching(d.Hitbox);
   }
   
   boolean isTouchingButton(Button b){
-      return (this.x + this.w >= b.x &&    
-      this.x <= b.x + b.w &&    
-      this.y + this.h >= b.y &&    
-      this.y <= b.y + b.h);     
+      return Hitbox.isTouching(b.Hitbox);
   }
   boolean isTouchingGem(Gem g){
-      return (this.x + this.w >= g.x &&    
-      this.x <= g.x + g.w &&    
-      this.y + this.h >= g.y &&    
-      this.y <= g.y + g.h);     
+      return Hitbox.isTouching(g.Hitbox);     
   }
   
 }

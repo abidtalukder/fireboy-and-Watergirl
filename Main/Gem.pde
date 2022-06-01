@@ -1,11 +1,9 @@
 public class Gem{
-  int x, y, w, h;
   ElementType type;
+  Rectangle Hitbox;
+  
   public Gem(int x, int y, int w, int h, ElementType type){
-    this.x = x;
-    this.y = y;
-    this.w = w;
-    this.h = h;
+    Hitbox = new Rectangle(x, y, w, h);
     this.type = type;
   }
   
@@ -16,6 +14,6 @@ public class Gem{
     else{
       fill(0, 255, 255);
     }
-    rect(x, y, w, h);
+    Hitbox.display();
   }
 }
