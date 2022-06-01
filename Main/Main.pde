@@ -3,7 +3,7 @@ import java.util.HashSet;
 import java.awt.event.KeyEvent;
 
 enum ElementType{
-  DEFAULT, FIRE, WATER, POISON;
+  DEFAULT, FIRE, WATER, POISON, ELEVATOR;
 }
 
 enum Action{
@@ -19,6 +19,7 @@ Character Fireboy, Watergirl;
 Controller controller;
 HashSet keysPressed = new HashSet();
 ArrayList<Platform> Platforms;
+ArrayList<Box> Boxes;
 Door d1, d2;
 boolean haveWon;
 
@@ -29,6 +30,8 @@ void setup(){
   
   HashMap<Integer, Action> map = new HashMap<Integer, Action>();
   Platforms = new ArrayList<Platform>();
+  Boxes = new ArrayList<Box>();
+  Boxes.add(new Box(50,300, 30, 30));
   Platforms.add(new Platform(0, 487, 511, 18, ElementType.DEFAULT));
   Platforms.add(new Platform(0, 0, 20, 500, ElementType.DEFAULT));
   Platforms.add(new Platform(2, 0, 519, 10, ElementType.DEFAULT));
@@ -52,6 +55,12 @@ void setup(){
   
   d1 = new Door(400, 15, 30, 40, ElementType.FIRE);    
   d2 = new Door(440, 15, 30, 40, ElementType.WATER);
+<<<<<<< HEAD
+=======
+  b1 = new Button(110, 310, 30, 15);
+  // mp1 = new MovingPlatform(35, 250, 65, 15, 50);
+   Platforms.add(new Platform(20,300,200,b1));
+>>>>>>> Abid-1
   
   map.put(KeyEvent.VK_R, Action.Reset);
 
@@ -68,6 +77,7 @@ void setup(){
   map.put(KeyEvent.VK_D, Action.Right);
 
   Watergirl = new Character(37, 381, ElementType.WATER, map, controller);
+  
 }
 
 void characterCollisions(Character Player){
@@ -103,8 +113,27 @@ void draw(){
     for(Platform p : Platforms){
       p.display();
     }
+    Watergirl.collisions.add(collision);
+  }
+  Watergirl.update();
+  // Watergirl.collisions.add(Watergirl.rectangleCollisions(mp1));
+  Watergirl.collisions = new HashSet<CollisionType>();
+  
+  for(Platform p : Platforms){
+    p.display();
+  }
+  d1.update(Fireboy.isTouchingDoor(d1));
+  d2.update(Watergirl.isTouchingDoor(d2));
+  
+  b1.update(Fireboy.isTouchingButton(b1) || Watergirl.isTouchingButton(b1) || Boxes.get(0).isTouchingButton(b1));
+  // mp1.update(b1.isPushed);
+  
     d1.display();
     d2.display();
+    b1.display();
+    // mp1.display();
+    Boxes.get(0).update();
+    Boxes.get(0).display();
     Fireboy.display();
     Watergirl.display();
     haveWon = d1.isOpen && d2.isOpen;
