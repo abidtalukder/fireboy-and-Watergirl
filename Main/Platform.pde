@@ -69,7 +69,7 @@ class Platform{
     if (activate != null && activate.isPushed){
       System.out.println("pressed");
     wait++;
-    if (wait >= 10) {
+    if (wait >= 3) {
      wait = 0;
       
      
@@ -85,7 +85,7 @@ class Platform{
     
       wait ++;
       
-      if (wait >= 10){
+      if (wait >= 3){
       
         wait = 0;
         

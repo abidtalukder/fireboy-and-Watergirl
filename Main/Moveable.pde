@@ -1,26 +1,36 @@
-//class Moveable {
+class Moveable {
 
-//  double x, y, xSpeed, ySpeed, speedLimit;
+float x, y, w, h, vx, vy, ax, ay;
 
-//  Moveable(double x, double y, double speedLimit) {
+  float g = 0.4; // Gravitational constant
+  float friction = 0.7; // Friction constant
+  float speedLimit = 1.5; // Speed Limit
+  float jumpConstant = -8; // Jump constant (up y-accel when jumping)
+  ElementType type;
+  
 
-//    xSpeed = 0;
-//    ySpeed= 0;
-//    this.x = x;
-//    this.y = y;
-//    this.speedLimit = speedLimit;
-//  }
+  
+  
+  public Moveable(int x, int y, int w, int h, ElementType type){
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.type = type;
+  }
 
-//  public void gravity() {
 
-//    if (onPlatform(x, y)!= null) {
-      
-      
-//    }
-//  }
 
-//  Platform onPlatform( double x, double y) {
 
-//    return null;
-//  }
-//}
+
+
+
+
+
+
+
+
+
+
+
+}

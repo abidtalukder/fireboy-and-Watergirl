@@ -3,7 +3,7 @@ import java.util.HashSet;
 import java.awt.event.KeyEvent;
 
 enum ElementType{
-  DEFAULT, FIRE, WATER, POISON, ELEVATOR;
+  DEFAULT, FIRE, WATER, POISON, ELEVATOR, ENEMY;
 }
 
 enum Action{
@@ -60,7 +60,7 @@ void setup(){
   d2 = new Door(440, 15, 30, 40, ElementType.WATER);
   b1 = new Button(110, 310, 30, 15);
   // mp1 = new MovingPlatform(35, 250, 65, 15, 50);
-   Platforms.add(new Platform(20,300,200,b1));
+   Platforms.add(new Platform(20,320,100,b1));
   
   map.put(KeyEvent.VK_R, Action.Reset);
 
