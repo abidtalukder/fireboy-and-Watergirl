@@ -35,7 +35,7 @@ void setup(){
   Platforms = new ArrayList<Platform>();
   Boxes = new ArrayList<Box>();
   Boxes.add(new Box(50,300, 30, 30));
-  
+  Platforms.add(new Platform(20,300,200,b1));
   Platforms.add(new Platform(0, 487, 511, 18, ElementType.DEFAULT));
   Platforms.add(new Platform(0, 0, 20, 500, ElementType.DEFAULT));
   Platforms.add(new Platform(2, 11, 519, -35, ElementType.DEFAULT));

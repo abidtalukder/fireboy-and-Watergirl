@@ -3,6 +3,9 @@ class Platform{
   
   int range;
   ElementType type;
+  int wait = 0;
+  int counter = 0;
+  Button activate = null;
   public Platform(int x, int y, int w, int h, ElementType type){
     this.x = x;
     this.y = y;
@@ -12,13 +15,16 @@ class Platform{
     range = 0;
   }
   
-  public Platform(int x, int y, int r) {
+  public Platform(int x, int y, int r, Button a) {
     
     this.x = x;
     this.y = y;
+    h = 10;
+    w = 60;
+    range = r;
+    activate = a;
+    type = ElementType.ELEVATOR;
     
-  
-  
   }
   
   //Rectangle getHurtBox(){
@@ -26,6 +32,10 @@ class Platform{
   //}
 
   void display(){
+    
+    
+    
+    move();
     switch(type){
       case DEFAULT:
         fill(205,133,63);
@@ -48,11 +58,46 @@ class Platform{
   }
   
   
-  void move() {
+ void move() {
   
     if (type == ElementType.ELEVATOR){
     
+    if (activate != null && activate.isPushed){
+      System.out.println("pressed");
+    wait++;
+    if (wait >= 10) {
+     wait = 0;
+      
+     
+     
+     if (counter < range) {
+     counter ++;
+     y++;
+     }
     
+    }
+    
+    } else {
+    
+      wait --;
+      
+      if (wait >= 10){
+      
+        wait = 0;
+        
+        
+        if (counter != 0){
+        y--;
+        counter --;
+        
+        
+        
+        }
+      
+      }
+      
+    
+    }
     
     }
   
