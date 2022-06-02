@@ -7,11 +7,12 @@ float speedLimit = 1.5;
 
 
   public Enemy(int x, int y){
-    super(x,y,20,20,ElementType.ENEMY);
+    super(x,y,30,30,ElementType.ENEMY);
+    vx = 1;
   }
   
   void display() {
-    fill(255,255,255);
+    fill(0,0,0);
     rect(x,y,w,h);
   }
   
@@ -19,6 +20,7 @@ float speedLimit = 1.5;
     ay = g; // By default, set gravity to g
 
     checkBoxCollisions();
+    checkPlatformCollisions();
 
     if(y + h >= height || collisions.contains(CollisionType.Bottom) || boxCollisions.contains(CollisionType.Bottom)){
       ay -= g; // Normal force cancels out gravity force
@@ -26,7 +28,7 @@ float speedLimit = 1.5;
       
     }
     
-    if (collisions.contains(CollisionType.Right) {
+    if (collisions.contains(CollisionType.Right)) {
       
       vx *= -1;
     
@@ -62,7 +64,7 @@ float speedLimit = 1.5;
   // is less than the the sum of half the widths and the sum of half the heights
   
   
-  // Displacements between the centers
+  // Displacements between the rcenters
   // Identify the center coordinates (left top translated by halfWidth, halfHeight) and subtract
   
   float dx = (this.x + this.w / 2.0) - (p.x + p.w / 2.0);

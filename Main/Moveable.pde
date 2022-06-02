@@ -201,6 +201,20 @@ CollisionType rectangleCollisions(Box p) {
       this.y + this.h >= b.y &&    
       this.y <= b.y + b.h);     
   }
+  
+   void checkPlatformCollisions() {
+
+    collisions.clear();
+
+    for (Platform p : Platforms) {
+      CollisionType temp = rectangleCollisions(p);
+      if (temp != CollisionType.None) {
+        collisions.add(temp);
+      }
+    }
+
+    //System.out.println(platformCollisions);
+  }
   /*
   boolean isTouchingMovingPlatform(MovingPlatform p){
       return (this.x + this.w >= p.x &&    

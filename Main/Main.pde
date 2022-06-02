@@ -23,6 +23,7 @@ ArrayList<Box> Boxes;
 Door d1, d2;
 boolean haveWon;
 Button b1;
+Enemy e;
 // MovingPlatform mp1;
 
 
@@ -69,6 +70,7 @@ void setup(){
   map.put(KeyEvent.VK_RIGHT, Action.Right);
 
   Fireboy = new Character(37, 470, ElementType.FIRE, map, controller);
+  e = new Enemy(200,120);
 
   map = new HashMap<Integer, Action>();
 
@@ -110,6 +112,7 @@ void draw(){
     Watergirl.collisions.add(collision);
   }
   Watergirl.update();
+  e.update();
   // Watergirl.collisions.add(Watergirl.rectangleCollisions(mp1));
   Watergirl.collisions = new HashSet<CollisionType>();
   
@@ -128,6 +131,7 @@ void draw(){
     // mp1.display();
     Boxes.get(0).update();
     Boxes.get(0).display();
+    e.display();
     Fireboy.display();
     Watergirl.display();
     haveWon = d1.isOpen && d2.isOpen;
