@@ -76,7 +76,7 @@ class Character{
        ax += 0.2;
     }
 
-    if(y + h >= height || collisions.contains(CollisionType.Bottom)){
+    if(collisions.contains(CollisionType.Bottom)){
       ay -= g; 
       vy = 0;
       if(actions.contains(Action.Up)){
@@ -100,79 +100,18 @@ class Character{
     if(Math.abs(vx) >= speedLimit){
       vx = Math.signum(vx) * speedLimit;
     }
-    x += vx;
-    y += vy;
-    Hitbox = new Rectangle((int) x, (int) y, (int) w, (int) h);
+    
+    Hitbox.x += vx;
+    Hitbox.y += vy;
   }
 
   CollisionType rectangleCollisions(Platform p){
-   float dx = (this.x + this.w / 2.0) - (p.x + p.w / 2.0);
-  float dy = (this.y + this.h / 2.0) - (p.y + p.h / 2.0);
-  
-  // The combined half dimensions are essentially component "radii"
-  float combinedHalfWidths = (this.w / 2.0) + (p.w / 2.0);
-  float combinedHalfHeights = (this.h / 2.0) + (p.h / 2.0);
-  
-  if(abs(dx) < combinedHalfWidths && abs(dy) < combinedHalfHeights){
-    // Overlap is "signed" here (positive / negative) for simplicity
-    float overlapX = combinedHalfWidths - abs(dx);
-    float overlapY = combinedHalfHeights - abs(dy);
-    if(overlapX >= overlapY){
-      if(dy > 0){
-        this.y += overlapY;
-        return CollisionType.Top;
-      }
-      
-      this.y -= overlapY;
-      return CollisionType.Bottom;
-    }
-    
-    if(dx > 0){
-      this.x += overlapX;
-      return CollisionType.Right;
-    }
-    this.x -= overlapX;
-    return CollisionType.Left;
-    
+    return Hitbox.rectangleCollisions(p.Hitbox);
   }
-  return CollisionType.None;
-  
-}
-
-
- CollisionType rectangleCollisions(MovingPlatform p){
-  
-  float dx = (this.x + this.w / 2.0) - (p.x + p.w / 2.0);
-  float dy = (this.y + this.h / 2.0) - (p.y + p.h / 2.0);
-  
-  // The combined half dimensions are essentially component "radii"
-  float combinedHalfWidths = (this.w / 2.0) + (p.w / 2.0);
-  float combinedHalfHeights = (this.h / 2.0) + (p.h / 2.0);
-  
-  if(abs(dx) < combinedHalfWidths && abs(dy) < combinedHalfHeights){
-    // Overlap is "signed" here (positive / negative) for simplicity
-    float overlapX = combinedHalfWidths - abs(dx);
-    float overlapY = combinedHalfHeights - abs(dy);
-    if(overlapX >= overlapY){
-      if(dy > 0){
-        this.y += overlapY;
-        return CollisionType.Top;
-      }
-      
-      this.y -= overlapY;
-      return CollisionType.Bottom;
-    }
-    
-    if(dx > 0){
-      this.x += overlapX;
-      return CollisionType.Right;
-    }
-    this.x -= overlapX;
-    return CollisionType.Left;
-    
+  CollisionType rectangleCollisions(MovingPlatform p){
+    return Hitbox.rectangleCollisions(p.Hitbox);
   }
-  return CollisionType.None;
-}
+
 
   boolean isTouchingDoor(Door d){
      return Hitbox.isTouching(d.Hitbox);

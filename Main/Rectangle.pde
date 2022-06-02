@@ -7,6 +7,9 @@ public class Rectangle{
     this.h = h;
   }
   
+  public Rectangle(float x, float y, float w, float h){
+    this((int) x, (int) y, (int) w, (int) h);
+  }  
   void display(){
     rect(x, y, w, h);
   }

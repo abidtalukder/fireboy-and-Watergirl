@@ -61,9 +61,9 @@ void setup(){
   
   d1 = new Door(400, 15, 30, 40, ElementType.FIRE);    
   d2 = new Door(440, 15, 30, 40, ElementType.WATER);
-  b1 = new Button(110, 310, 30, 15);
+  b1 = new Button(140, 310, 30, 15);
   b2 = new Button(140, 228, 30, 15);
-  mp1 = new MovingPlatform(35, 250, 65, 15, 20);
+  mp1 = new MovingPlatform(35, 250, 65, 15, 60);
   
   map.put(KeyEvent.VK_R, Action.Reset);
 
@@ -124,8 +124,7 @@ void draw(){
     d2.update(Watergirl.isTouchingDoor(d2));
     b1.update(Fireboy.isTouchingButton(b1) || Watergirl.isTouchingButton(b1));
     b2.update(Fireboy.isTouchingButton(b2) || Watergirl.isTouchingButton(b2));
-    mp1.update(b1.isPushed || b2.isPushed, Fireboy.collisions);
-    mp1.update(b1.isPushed || b2.isPushed, Watergirl.collisions);
+    mp1.update(b1.isPushed || b2.isPushed);
     Fireboy.collisions = new HashSet<CollisionType>();
     Watergirl.collisions = new HashSet<CollisionType>();
     
