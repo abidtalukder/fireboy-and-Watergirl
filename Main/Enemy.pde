@@ -26,6 +26,18 @@ float speedLimit = 1.5;
       
     }
     
+    if (collisions.contains(CollisionType.Right) {
+      
+      vx *= -1;
+    
+    } else if (collisions.contains(CollisionType.Left)) {
+      
+      vx *= -1;
+    
+    }
+    
+    
+    
     vy += ay;
 
 
@@ -33,7 +45,36 @@ float speedLimit = 1.5;
     y += vy;
 
     checkBoundaries();
+    isTouchingPlayers();
   }
+  
+  void isTouchingPlayers() {
+  
+    if (rectangleCollisions(Fireboy)|| rectangleCollisions(Watergirl)) {
+    reset();
+    }
+  
+  }
+  
+     boolean rectangleCollisions(Character p){
+  
+  // Rectangular collision occurs when the components distances between the centers
+  // is less than the the sum of half the widths and the sum of half the heights
+  
+  
+  // Displacements between the centers
+  // Identify the center coordinates (left top translated by halfWidth, halfHeight) and subtract
+  
+  float dx = (this.x + this.w / 2.0) - (p.x + p.w / 2.0);
+  float dy = (this.y + this.h / 2.0) - (p.y + p.h / 2.0);
+  
+  // The combined half dimensions are essentially component "radii"
+  float combinedHalfWidths = (this.w / 2.0) + (p.w / 2.0);
+  float combinedHalfHeights = (this.h / 2.0) + (p.h / 2.0);
+  
+  return abs(dx) < combinedHalfWidths && abs(dy) < combinedHalfHeights;
+  
+}
 
 
 
