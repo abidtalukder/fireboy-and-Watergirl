@@ -1,6 +1,6 @@
 class Box {
 
-  int x, y, w, h;
+  float x, y, w, h;
   float vx, vy, ax, ay = 0;
   float g = 0.4; // Gravitational constant
   float friction = 0.7; // Friction constant
