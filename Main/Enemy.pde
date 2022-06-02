@@ -28,6 +28,10 @@ float speedLimit = 1.5;
       
     }
     
+    if (boxCollisions.contains(CollisionType.Right) || boxCollisions.contains(CollisionType.Left)) {
+    ay += jumpConstant;
+    }
+    
     if (collisions.contains(CollisionType.Right)) {
       
       vx *= -1;
