@@ -23,7 +23,7 @@ ArrayList<Box> Boxes;
 Door d1, d2;
 boolean haveWon;
 Button b1;
-Enemy e;
+//Enemy e;
 Portal p;
 // MovingPlatform mp1;
 
@@ -72,7 +72,7 @@ void setup(){
   map.put(KeyEvent.VK_RIGHT, Action.Right);
 
   Fireboy = new Character(37, 470, ElementType.FIRE, map, controller);
-  e = new Enemy(200,120);
+  //e = new Enemy(200,120);
 
   map = new HashMap<Integer, Action>();
 
@@ -114,18 +114,18 @@ void draw(){
     Watergirl.collisions.add(collision);
   }
   Watergirl.update();
-  e.update();
+ // e.update();
   p.update();
   // Watergirl.collisions.add(Watergirl.rectangleCollisions(mp1));
   Watergirl.collisions = new HashSet<CollisionType>();
   
-  for(Platform p : Platforms){
-    p.display();
+  for(Platform po : Platforms){
+    po.display();
   }
   d1.update(Fireboy.isTouchingDoor(d1));
   d2.update(Watergirl.isTouchingDoor(d2));
   
-  b1.update(Fireboy.isTouchingButton(b1) || Watergirl.isTouchingButton(b1) || Boxes.get(0).isTouchingButton(b1) || e.isTouchingButton(b1));
+  b1.update(Fireboy.isTouchingButton(b1) || Watergirl.isTouchingButton(b1) || Boxes.get(0).isTouchingButton(b1));
   // mp1.update(b1.isPushed);
   
     d1.display();
@@ -134,7 +134,7 @@ void draw(){
     // mp1.display();
     Boxes.get(0).update();
     Boxes.get(0).display();
-    e.display();
+    //e.display();
     p.display();
     Fireboy.display();
     Watergirl.display();

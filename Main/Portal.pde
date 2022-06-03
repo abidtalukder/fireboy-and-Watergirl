@@ -29,6 +29,7 @@ class Portal {
     for (int i = 0; i < enemies.size(); i++) {
 
       if (enemies.get(i).isDead) {
+        //System.out.println("Portal received");
         if (counter==wait) {
 
           enemies.get(i).isDead = false;

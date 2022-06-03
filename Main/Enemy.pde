@@ -65,7 +65,7 @@ boolean isDead = false;
   void isDead(){
   
     isDead = (rectangleCollisions(Fireboy)==CollisionType.Top || rectangleCollisions(Watergirl) == CollisionType.Top);
-    if (isDead) {System.out.println("Top");}
+    //if (isDead) {System.out.println("Top");}
     
   
   }
