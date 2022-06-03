@@ -64,7 +64,44 @@ boolean isDead = false;
   
   void isDead(){
   
-    isDead = (rectangleCollisions(Fireboy)==CollisionType.Top || rectangleCollisions(Watergirl) == CollisionType.Top);
+    boolean f = (rectangleCollisions(Fireboy)==CollisionType.Top);
+    boolean w = rectangleCollisions(Watergirl) == CollisionType.Top;
+    
+    isDead = f || w;
+     
+    if (f) {
+    //isDead = true;
+    //Fireboy.vy -= 4;
+    //HashSet<Action> actions = Fireboy.currActions();
+    //if (actions.contains(Action.Right)) {
+    //Fireboy.vx = 0.2;
+    //} else if (actions.contains(Action.Left)) {
+    //Fireboy.vx = -0.2;
+    //}
+    
+    
+    //Fireboy.x += Fireboy.vx;
+    //Fireboy.y += Fireboy.vy;
+    //Fireboy.display();
+    
+    }
+    
+    if (w) {
+    //isDead = true;
+    //Watergirl.ay -= 4;
+    //HashSet<Action> actions = Watergirl.currActions();
+    //if (actions.contains(Action.Right)) {
+    //Watergirl.vx = 0.2;
+    //} else if (actions.contains(Action.Left)) {
+    //Watergirl.vx = -0.2;
+    //}
+    
+    //Watergirl.vy += Watergirl.ay;
+    //Watergirl.x += Watergirl.vx;
+    //Watergirl.y += Watergirl.vy;
+    //Watergirl.display();
+    
+    }
     //if (isDead) {System.out.println("Top");}
     
   
