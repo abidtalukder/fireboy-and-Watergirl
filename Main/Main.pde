@@ -124,8 +124,17 @@ void draw(){
   }
   d1.update(Fireboy.isTouchingDoor(d1));
   d2.update(Watergirl.isTouchingDoor(d2));
+  boolean portalTouched = false;
+  for (Enemy e : p.enemies) {
   
-  b1.update(Fireboy.isTouchingButton(b1) || Watergirl.isTouchingButton(b1) || Boxes.get(0).isTouchingButton(b1));
+    if (e.isTouchingButton(b1)) {
+    portalTouched = true;
+    break;
+    }
+  
+  }
+  
+  b1.update(Fireboy.isTouchingButton(b1) || Watergirl.isTouchingButton(b1) || Boxes.get(0).isTouchingButton(b1) || portalTouched);
   // mp1.update(b1.isPushed);
   
     d1.display();
