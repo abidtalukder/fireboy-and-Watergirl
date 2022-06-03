@@ -2,6 +2,8 @@ class Enemy extends Moveable {
 
 
 float speedLimit = 1.5;
+
+boolean isDead = false;
   
 
 
