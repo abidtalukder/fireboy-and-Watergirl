@@ -1,14 +1,10 @@
 class Door{
-  int x, y, w, h, t, numFrames;
+  int t, numFrames;
   boolean isOpen;
   ElementType type;
   Rectangle Hitbox;
   
   public Door(int x, int y, int w, int h, ElementType type){
-    this.x = x;
-    this.y = y;
-    this.w = w; 
-    this.h = h;
     Hitbox = new Rectangle(x, y, w, h);
     t = 0;
     numFrames = 15; // Higher number => slower speed // lower number => higher speed
@@ -40,9 +36,9 @@ class Door{
       fill(0, 255, 255);
     }
     
-    rect(x, y, w, h);
+    Hitbox.display();
     fill(0);
-    rect(x + 1, y + 1, w - 2, h - 1);
+    rect(Hitbox.x + 1, Hitbox.y + 1, Hitbox.w - 2, Hitbox.h - 1);
     
     if(type == ElementType.FIRE){
       fill(165, 42, 42);
@@ -51,7 +47,7 @@ class Door{
       fill(0, 255, 255);
     }
     
-    rect(x + 2, y + 2 + (t * h) / numFrames , w - 4, h - 2 - (t * h) / numFrames);
+    rect(Hitbox.x + 2, Hitbox.y + 2 + (t * Hitbox.h) / numFrames , Hitbox.w - 4, Hitbox.h - 2 - (t * Hitbox.h) / numFrames);
   }
   
 }

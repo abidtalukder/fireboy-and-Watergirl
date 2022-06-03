@@ -18,10 +18,6 @@ class Character{
   }
   
   public Character(int x, int y, int w, int h, ElementType type, HashMap<Integer, Action> map, Controller controller){
-    this.x = x;
-    this.y = y;
-    this.w = w;
-    this.h = h;
     Hitbox = new Rectangle(x, y, w, h);
     
     if(type != ElementType.FIRE && type != ElementType.WATER){
@@ -60,7 +56,6 @@ class Character{
       fill(0, 0, 255);
     }
 
-    // rect(x, y, w, h);
     Hitbox.display();
   }
 
@@ -77,7 +72,7 @@ class Character{
     }
 
     if(collisions.contains(CollisionType.Bottom)){
-      ay -= g; 
+      ay = 0; 
       vy = 0;
       if(actions.contains(Action.Up)){
         ay += jumpConstant;
@@ -94,7 +89,7 @@ class Character{
     vx *= friction;
     // Avoid the code multiplying by friction too often - just set the velocity to 0
     if(Math.abs(vx) < 0.2) {
-      vx  = 0;
+      vx = 0;
     }
 
     if(Math.abs(vx) >= speedLimit){
@@ -103,11 +98,21 @@ class Character{
     
     Hitbox.x += vx;
     Hitbox.y += vy;
+    // Diagnostics
+    /*
+    print("x: " + Hitbox.x + ", y: " + Hitbox.y + "vx: " + vx + ", vy: " + vy + ", ax: " + ax + ", ay: " + ay);
+    for(CollisionType c : collisions){
+      print(" " + c);
+    }
+    println();
+    */
+    
   }
 
   CollisionType rectangleCollisions(Platform p){
     return Hitbox.rectangleCollisions(p.Hitbox);
   }
+  
   CollisionType rectangleCollisions(MovingPlatform p){
     return Hitbox.rectangleCollisions(p.Hitbox);
   }

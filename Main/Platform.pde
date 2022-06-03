@@ -4,10 +4,6 @@ class Platform{
   
   Rectangle Hitbox;
   public Platform(int x, int y, int w, int h, ElementType type){
-    this.x = x;
-    this.y = y;
-    this.w = w; 
-    this.h = h;
     Hitbox = new Rectangle(x, y, w, h);
     this.type = type;
   }

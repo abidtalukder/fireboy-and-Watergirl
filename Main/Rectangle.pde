@@ -1,5 +1,5 @@
 public class Rectangle{
-  int x, y, w, h;
+  float x, y, w, h;
   public Rectangle(int x, int y, int w, int h){
     this.x = x;
     this.y = y;

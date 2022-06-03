@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+
 class Button{
   int x, y, w, h, t, numFrames;
   boolean isPushed;
@@ -26,7 +29,8 @@ class Button{
       if(t > 0)
         this.t = this.t - 1;
     }
-    Hitbox = new Rectangle(x + 2, y + (t * h) / numFrames - 1, w - 4, h + 2 - (t * h) / numFrames);
+    Hitbox.y = y + (t * h) / numFrames - 1;
+    Hitbox.h = h + 2 - (t * h) / numFrames;
   }
 
 

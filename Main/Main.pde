@@ -1,6 +1,10 @@
 import java.util.HashMap;
 import java.util.HashSet;
 import java.awt.event.KeyEvent;
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+
 
 enum ElementType{
   DEFAULT, FIRE, WATER, POISON;
@@ -33,6 +37,12 @@ void setup(){
   HashMap<Integer, Action> map = new HashMap<Integer, Action>();
   Platforms = new ArrayList<Platform>();
   Gems = new ArrayList<Gem>();
+  try{
+    objectParser(new File("LevelOne.txt"));  
+  }
+  catch(Exception e){
+   System.out.println("File not found"); 
+  }
   
   Platforms.add(new Platform(0, 487, 511, 18, ElementType.DEFAULT));
   Platforms.add(new Platform(0, 0, 20, 500, ElementType.DEFAULT));
@@ -162,4 +172,87 @@ void keyPressed(){
 
 void keyReleased(){
   controller.keyRemove(keyCode);
+}
+
+ArrayList<Object> objectParser(File file) throws FileNotFoundException{
+  ArrayList<Object> objects = new ArrayList<Object>();
+  try{ 
+    Scanner scan = new Scanner(file);
+    while(scan.hasNextLine()){
+      String[] tokens = scan.nextLine().split(" ");
+      if(tokens[0].equals("Platform")){
+        ElementType type = ElementType.DEFAULT;
+        if(tokens[5].equals("DEFAULT")){
+          type = ElementType.DEFAULT;
+        }
+        if(tokens[5].equals("FIRE")){
+          type = ElementType.FIRE;
+        }
+        if(tokens[5].equals("WATER")){
+          type = ElementType.WATER;
+        }
+        if(tokens[5].equals("POISON")){
+          type = ElementType.POISON;
+        }
+        int x = new Integer(tokens[1]);
+        int y = new Integer(tokens[2]);
+        int w = new Integer(tokens[3]);
+        int h = new Integer(tokens[4]);
+        objects.add(new Platform(x, y, w, h, type));
+      }
+      
+      if(tokens[0].equals("Gem")){
+        ElementType type = ElementType.FIRE;
+        if(tokens[5].equals("FIRE")){
+          type = ElementType.FIRE; 
+        }
+        if(tokens[5].equals("WATER")){
+          type = ElementType.WATER; 
+        }
+        int x = new Integer(tokens[1]);
+        int y = new Integer(tokens[2]);
+        int w = new Integer(tokens[3]);
+        int h = new Integer(tokens[4]);
+        objects.add(new Gem(x, y, w, h, type));
+      }
+      
+      if(tokens[0].equals("Button")){
+        int x = new Integer(tokens[0]);
+        int y = new Integer(tokens[1]);
+        int w = new Integer(tokens[2]);
+        int h = new Integer(tokens[3]);
+        objects.add(new Button(x, y, w, h));
+      }
+      
+      if(tokens[0].equals("Door")){
+        
+        ElementType type = ElementType.FIRE;
+        if(tokens[5].equals("FIRE")){
+          type = ElementType.FIRE; 
+        }
+        if(tokens[5].equals("WATER")){
+          type = ElementType.WATER; 
+        }
+        int x = new Integer(tokens[1]);
+        int y = new Integer(tokens[2]);
+        int w = new Integer(tokens[3]);
+        int h = new Integer(tokens[4]);
+        objects.add(new Door(x, y, w, h, type));
+       
+      }
+       if(tokens[0].equals("MovingPlatform")){
+        int x = new Integer(tokens[0]);
+        int y = new Integer(tokens[1]);
+        int w = new Integer(tokens[2]);
+        int h = new Integer(tokens[3]);
+        int yDisp = new Integer(tokens [4]);
+        objects.add(new MovingPlatform(x, y, w, h, yDisp));
+      }
+      
+    }
+  }
+  catch(Exception e){
+    throw new FileNotFoundException("File not found");
+  }
+  return objects;
 }
