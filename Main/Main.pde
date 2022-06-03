@@ -24,6 +24,7 @@ Door d1, d2;
 boolean haveWon;
 Button b1;
 Enemy e;
+Portal p;
 // MovingPlatform mp1;
 
 
@@ -31,6 +32,7 @@ void setup(){
   size(500, 500);
   noStroke();
   controller = new Controller();
+  p = new Portal(200,120);
   
   HashMap<Integer, Action> map = new HashMap<Integer, Action>();
   Platforms = new ArrayList<Platform>();
@@ -113,6 +115,7 @@ void draw(){
   }
   Watergirl.update();
   e.update();
+  p.update();
   // Watergirl.collisions.add(Watergirl.rectangleCollisions(mp1));
   Watergirl.collisions = new HashSet<CollisionType>();
   
@@ -132,6 +135,7 @@ void draw(){
     Boxes.get(0).update();
     Boxes.get(0).display();
     e.display();
+    p.display();
     Fireboy.display();
     Watergirl.display();
     haveWon = d1.isOpen && d2.isOpen;

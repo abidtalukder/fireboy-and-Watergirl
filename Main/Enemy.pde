@@ -5,9 +5,6 @@ float speedLimit = 1.5;
 
 boolean isDead = false;
   
-
-
-
   public Enemy(int x, int y){
     super(x,y,30,30,ElementType.ENEMY);
     vx = 1;
@@ -54,13 +51,22 @@ boolean isDead = false;
 
     checkBoundaries();
     isTouchingPlayers();
+    isDead();
   }
   
   void isTouchingPlayers() {
   
-    if (rectangleCollisions(Fireboy)==CollisionType.Left|| rectangleCollisions(Fireboy)==CollisionType.Right || rectangleCollisions(Watergirl)==CollisionType.Left || rectangleCollisions(Watergirl)==CollisionType.Right) {
+    if (rectangleCollisions(Fireboy)==CollisionType.Bottom || rectangleCollisions(Fireboy)==CollisionType.Left|| rectangleCollisions(Fireboy)==CollisionType.Right || rectangleCollisions(Watergirl)==CollisionType.Left || rectangleCollisions(Watergirl)==CollisionType.Right || rectangleCollisions(Watergirl)==CollisionType.Bottom) {
       reset();
     }
+  
+  }
+  
+  void isDead(){
+  
+    isDead = (rectangleCollisions(Fireboy)==CollisionType.Top || rectangleCollisions(Watergirl) == CollisionType.Top);
+    if (isDead) {System.out.println("Top");}
+    
   
   }
   
