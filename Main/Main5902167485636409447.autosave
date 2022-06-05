@@ -28,25 +28,26 @@ Door d1, d2;
 boolean haveWon;
 Button b1, b2;
 MovingPlatform mp1;
-
+ArrayList<Object> levelObjects;
 void setup(){
   size(500, 500);
   noStroke();
   controller = new Controller();
-
+  
   HashMap<Integer, Action> map = new HashMap<Integer, Action>();
   Platforms = new ArrayList<Platform>();
   Gems = new ArrayList<Gem>();
 
   String[] levelOne = new String[0];
+  levelObjects = new ArrayList<Object>();
   try{
     levelOne = loadStrings("LevelOne.txt");
-    objectParser(levelOne);
+    levelObjects = objectParser(levelOne);
   }
   catch(Exception e){
    System.out.println("File not found");
   }
-
+  // for(Platform p : levelObjects){}
 
   Platforms.add(new Platform(0, 487, 511, 18, ElementType.DEFAULT));
   Platforms.add(new Platform(0, 0, 20, 500, ElementType.DEFAULT));
@@ -61,24 +62,24 @@ void setup(){
   Platforms.add(new Platform(90, 155, 205, 25, ElementType.DEFAULT));
   Platforms.add(new Platform(185, 54, 305, 16, ElementType.DEFAULT));
   Platforms.add(new Platform(450, 450, 500, 500, ElementType.DEFAULT));
-
+  
   Platforms.add(new Platform(350, 200, 200, 50, ElementType.DEFAULT));
-
+  
   Platforms.add(new Platform(350, 486, 50, 10, ElementType.FIRE));
   Platforms.add(new Platform(250, 486, 50, 10, ElementType.WATER));
   Platforms.add(new Platform(200, 323, 50, 10, ElementType.POISON));
-
+  
   Gems.add(new Gem(260, 470, 10, 5, ElementType.WATER));
   Gems.add(new Gem(280, 470, 10, 5, ElementType.WATER));
   Gems.add(new Gem(360, 470, 10, 5, ElementType.FIRE));
   Gems.add(new Gem(380, 470, 10, 5, ElementType.FIRE));
-
-  d1 = new Door(400, 15, 30, 40, ElementType.FIRE);
+  
+  d1 = new Door(400, 15, 30, 40, ElementType.FIRE);    
   d2 = new Door(440, 15, 30, 40, ElementType.WATER);
   b1 = new Button(140, 310, 30, 15);
   b2 = new Button(140, 228, 30, 15);
   mp1 = new MovingPlatform(35, 250, 65, 15, 60);
-
+  
   map.put(KeyEvent.VK_R, Action.Reset);
 
   map.put(KeyEvent.VK_UP, Action.Up);
@@ -118,19 +119,19 @@ void characterCollisions(Character Player){
   Player.collisions.add(Player.rectangleCollisions(mp1));
   Player.update();
   // Player.collisions = new HashSet<CollisionType>();
-
+  
 }
 
 void draw(){
   if(!haveWon){
   background(255);
-
+  
   // "r" is pressed => Reset
   if(controller.currentlyHeld.contains(KeyEvent.VK_R)){
     reset();
     controller.keyRemove(KeyEvent.VK_R);
   }
-
+  
     characterCollisions(Fireboy);
     characterCollisions(Watergirl);
 
@@ -141,14 +142,14 @@ void draw(){
     mp1.update(b1.isPushed || b2.isPushed);
     Fireboy.collisions = new HashSet<CollisionType>();
     Watergirl.collisions = new HashSet<CollisionType>();
-
+    
     for(Platform p : Platforms){
       p.display();
     }
     for(Gem g : Gems){
       g.display();
     }
-
+    
     d1.display();
     d2.display();
     b1.display();
@@ -183,7 +184,7 @@ ArrayList<Object> objectParser(String[] tokens) throws FileNotFoundException{
   String[] objTokens;
   for(String token : tokens){
       objTokens = split(token, " ");
-
+      
       if(objTokens[0].equals("Platform")){
         ElementType type = ElementType.DEFAULT;
         if(objTokens[5].equals("DEFAULT")){
@@ -204,56 +205,141 @@ ArrayList<Object> objectParser(String[] tokens) throws FileNotFoundException{
         int h = new Integer(tokens[4]);
         objects.add(new Platform(x, y, w, h, type));
       }
-
-      // if(objTokens[0].equals("Gem")){
-      //   ElementType type = ElementType.FIRE;
-      //   if(objTokens[5].equals("FIRE")){
-      //     type = ElementType.FIRE;
-      //   }
-      //   if(objTokens[5].equals("WATER")){
-      //     type = ElementType.WATER;
-      //   }
-      //   int x = new Integer(objTokens[1]);
-      //   int y = new Integer(objTokens[2]);
-      //   int w = new Integer(objTokens[3]);
-      //   int h = new Integer(objTokens[4]);
-      //   objects.add(new Gem(x, y, w, h, type));
-      // }
-      //
-      // if(objTokens[0].equals("Button")){
-      //   int x = new Integer(objTokens[0]);
-      //   int y = new Integer(objTokens[1]);
-      //   int w = new Integer(objTokens[2]);
-      //   int h = new Integer(objTokens[3]);
-      //   objects.add(new Button(x, y, w, h));
-      // }
-      //
-      // if(objTokens[0].equals("Door")){
-      //
-      //   ElementType type = ElementType.FIRE;
-      //   if(objTokens[5].equals("FIRE")){
-      //     type = ElementType.FIRE;
-      //   }
-      //   if(objTokens[5].equals("WATER")){
-      //     type = ElementType.WATER;
-      //   }
-      //   int x = new Integer(objTokens[1]);
-      //   int y = new Integer(objTokens[2]);
-      //   int w = new Integer(objTokens[3]);
-      //   int h = new Integer(objTokens[4]);
-      //   objects.add(new Door(x, y, w, h, type));
-      //
-      // }
-      //  if(tokens[0].equals("MovingPlatform")){
-      //   int x = new Integer(objTokens[0]);
-      //   int y = new Integer(objTokens[1]);
-      //   int w = new Integer(objTokens[2]);
-      //   int h = new Integer(objTokens[3]);
-      //   int yDisp = new Integer(tokens [4]);
-      //   objects.add(new MovingPlatform(x, y, w, h, yDisp));
-      // }
-
+      
+      if(objTokens[0].equals("Gem")){
+        ElementType type = ElementType.FIRE;
+        if(objTokens[5].equals("FIRE")){
+          type = ElementType.FIRE; 
+        }
+        if(objTokens[5].equals("WATER")){
+          type = ElementType.WATER; 
+        }
+        int x = new Integer(objTokens[1]);
+        int y = new Integer(objTokens[2]);
+        int w = new Integer(objTokens[3]);
+        int h = new Integer(objTokens[4]);
+        objects.add(new Gem(x, y, w, h, type));
+      }
+      
+      if(objTokens[0].equals("Button")){
+        int x = new Integer(objTokens[0]);
+        int y = new Integer(objTokens[1]);
+        int w = new Integer(objTokens[2]);
+        int h = new Integer(objTokens[3]);
+        objects.add(new Button(x, y, w, h));
+      }
+      
+      if(objTokens[0].equals("Door")){
+        
+        ElementType type = ElementType.FIRE;
+        if(objTokens[5].equals("FIRE")){
+          type = ElementType.FIRE; 
+        }
+        if(objTokens[5].equals("WATER")){
+          type = ElementType.WATER; 
+        }
+        int x = new Integer(objTokens[1]);
+        int y = new Integer(objTokens[2]);
+        int w = new Integer(objTokens[3]);
+        int h = new Integer(objTokens[4]);
+        objects.add(new Door(x, y, w, h, type));
+       
+      }
+       if(tokens[0].equals("MovingPlatform")){
+        int x = new Integer(objTokens[0]);
+        int y = new Integer(objTokens[1]);
+        int w = new Integer(objTokens[2]);
+        int h = new Integer(objTokens[3]);
+        int yDisp = new Integer(tokens [4]);
+        objects.add(new MovingPlatform(x, y, w, h, yDisp));
+      }
+        
     }
-
+  
+  
+  //for(String obj : tokens){
+  //  println(obj);
+  //}
+  
+  
+  //try{ 
+  //  String[] objTokens; // Warning: Initialize outside to avoid assignment errors
+  //  for(int i = 0; i < tokens.length; i++){
+  //    objTokens = split(tokens[i], " ");
+      
+  //    if(objTokens[0].equals("Platform")){
+  //      ElementType type = ElementType.DEFAULT;
+  //      if(objTokens[5].equals("DEFAULT")){
+  //        type = ElementType.DEFAULT;
+  //      }
+  //      if(objTokens[5].equals("FIRE")){
+  //        type = ElementType.FIRE;
+  //      }
+  //      if(objTokens[5].equals("WATER")){
+  //        type = ElementType.WATER;
+  //      }
+  //      if(objTokens[5].equals("POISON")){
+  //        type = ElementType.POISON;
+  //      }
+  //      int x = new Integer(tokens[1]);
+  //      int y = new Integer(tokens[2]);
+  //      int w = new Integer(tokens[3]);
+  //      int h = new Integer(tokens[4]);
+  //      objects.add(new Platform(x, y, w, h, type));
+  //    }
+      
+  //    if(objTokens[0].equals("Gem")){
+  //      ElementType type = ElementType.FIRE;
+  //      if(objTokens[5].equals("FIRE")){
+  //        type = ElementType.FIRE; 
+  //      }
+  //      if(objTokens[5].equals("WATER")){
+  //        type = ElementType.WATER; 
+  //      }
+  //      int x = new Integer(objTokens[1]);
+  //      int y = new Integer(objTokens[2]);
+  //      int w = new Integer(objTokens[3]);
+  //      int h = new Integer(objTokens[4]);
+  //      objects.add(new Gem(x, y, w, h, type));
+  //    }
+      
+  //    if(objTokens[0].equals("Button")){
+  //      int x = new Integer(objTokens[0]);
+  //      int y = new Integer(objTokens[1]);
+  //      int w = new Integer(objTokens[2]);
+  //      int h = new Integer(objTokens[3]);
+  //      objects.add(new Button(x, y, w, h));
+  //    }
+      
+  //    if(objTokens[0].equals("Door")){
+        
+  //      ElementType type = ElementType.FIRE;
+  //      if(objTokens[5].equals("FIRE")){
+  //        type = ElementType.FIRE; 
+  //      }
+  //      if(objTokens[5].equals("WATER")){
+  //        type = ElementType.WATER; 
+  //      }
+  //      int x = new Integer(objTokens[1]);
+  //      int y = new Integer(objTokens[2]);
+  //      int w = new Integer(objTokens[3]);
+  //      int h = new Integer(objTokens[4]);
+  //      objects.add(new Door(x, y, w, h, type));
+       
+  //    }
+  //     if(tokens[0].equals("MovingPlatform")){
+  //      int x = new Integer(objTokens[0]);
+  //      int y = new Integer(objTokens[1]);
+  //      int w = new Integer(objTokens[2]);
+  //      int h = new Integer(objTokens[3]);
+  //      int yDisp = new Integer(tokens [4]);
+  //      objects.add(new MovingPlatform(x, y, w, h, yDisp));
+  //    }
+        
+  //  }
+  //}
+  //catch(Exception e){
+  //  throw new FileNotFoundException("File not found");
+  //}
   return objects;
 }
