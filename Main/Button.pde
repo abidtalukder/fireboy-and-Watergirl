@@ -1,7 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 
-class Button{
+class Button implements Displayable{
   int x, y, w, h, t, numFrames;
   boolean isPushed;
   Rectangle Hitbox;

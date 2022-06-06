@@ -1,4 +1,4 @@
-public class Gem{
+public class Gem implements Displayable{
   ElementType type;
   Rectangle Hitbox;
   

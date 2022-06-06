@@ -25,6 +25,12 @@ Gem 380 470 10 5 FIRE
 
 Door 400 15 30 40 FIRE
 Door 440 15 30 40 WATER
+
+BUTTONGROUP
+MovingPlatform 35 250 65 15 60
 Button 140 310 30 15
 Button 140 228 30 15
-MovingPlatform 35 250 65 15 60
+
+
+Character 37 470 FIRE
+Character 37 381 WATER

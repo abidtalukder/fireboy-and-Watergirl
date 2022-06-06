@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
-
+import java.util.Arrays;
 
 enum ElementType{
   DEFAULT, FIRE, WATER, POISON;
@@ -29,6 +29,10 @@ boolean haveWon;
 Button b1, b2;
 MovingPlatform mp1;
 
+ArrayList<Object> levelOne;
+ArrayList<Object> levelTwo;
+ArrayList<Object> levelThree;
+
 void setup(){
   size(500, 500);
   noStroke();
@@ -38,14 +42,37 @@ void setup(){
   Platforms = new ArrayList<Platform>();
   Gems = new ArrayList<Gem>();
 
-  String[] levelOne = new String[0];
+  String[] levelOneStrings = new String[0];
   try{
-    levelOne = loadStrings("LevelOne.txt");
-    objectParser(levelOne);
+    levelOneStrings = loadStrings("LevelOne.txt");
+    levelOne =  objectParser(levelOneStrings);
   }
+
   catch(Exception e){
-   System.out.println("File not found");
+   System.out.println("LevelOne.txt not found");
   }
+  //String[] levelTwoStrings = new String[0];
+  //try{
+  //  levelTwoStrings = loadStrings("LevelTwo.txt");
+  //  levelTwo =  objectParser(levelTwoStrings);
+  //}
+
+  //catch(Exception e){
+  // System.out.println("LevelTwo.txt not found");
+  //}
+    //String[] levelTwoStrings = new String[0];
+  //try{
+  //  levelThreeStrings = loadStrings("LevelThree.txt");
+  //  levelThree =  objectParser(levelThreeStrings);
+  //}
+
+  //catch(Exception e){
+  // System.out.println("LevelThree.txt not found");
+  //}
+
+
+
+
 
 
   Platforms.add(new Platform(0, 487, 511, 18, ElementType.DEFAULT));
@@ -117,8 +144,6 @@ void characterCollisions(Character Player){
   }
   Player.collisions.add(Player.rectangleCollisions(mp1));
   Player.update();
-  // Player.collisions = new HashSet<CollisionType>();
-
 }
 
 void draw(){
@@ -149,13 +174,26 @@ void draw(){
       g.display();
     }
 
-    d1.display();
-    d2.display();
-    b1.display();
-    b2.display();
-    mp1.display();
-    Fireboy.display();
-    Watergirl.display();
+    //d1.display();
+    //d2.display();
+    //b1.display();
+    //b2.display();
+    //mp1.display();
+    //Fireboy.display();
+    //Watergirl.display();
+
+
+    /* NEW IMPlEMENTATION IDEAS:
+    - Make an object arraylist of all the things in the level
+    - Have every "displayable" implement Displayable, to avoid cluttering Main
+    */
+    for(Object o : levelOne){
+      if(o instanceof Displayable){
+        ((Displayable) o).display();
+      }
+    }
+
+
     haveWon = d1.isOpen && d2.isOpen;
   }
   else{
@@ -181,9 +219,9 @@ void keyReleased(){
 ArrayList<Object> objectParser(String[] tokens) throws FileNotFoundException{
   ArrayList<Object> objects = new ArrayList<Object>();
   String[] objTokens;
-  for(String token : tokens){
-      objTokens = split(token, " ");
 
+  for(int i = 0; i < tokens.length; i++){
+      objTokens = split(tokens[i], " ");
       if(objTokens[0].equals("Platform")){
         ElementType type = ElementType.DEFAULT;
         if(objTokens[5].equals("DEFAULT")){
@@ -198,62 +236,86 @@ ArrayList<Object> objectParser(String[] tokens) throws FileNotFoundException{
         if(objTokens[5].equals("POISON")){
           type = ElementType.POISON;
         }
-        int x = new Integer(tokens[1]);
-        int y = new Integer(tokens[2]);
-        int w = new Integer(tokens[3]);
-        int h = new Integer(tokens[4]);
+        int x = new Integer(objTokens[1]);
+        int y = new Integer(objTokens[2]);
+        int w = new Integer(objTokens[3]);
+        int h = new Integer(objTokens[4]);
         objects.add(new Platform(x, y, w, h, type));
       }
 
-      // if(objTokens[0].equals("Gem")){
-      //   ElementType type = ElementType.FIRE;
-      //   if(objTokens[5].equals("FIRE")){
-      //     type = ElementType.FIRE;
-      //   }
-      //   if(objTokens[5].equals("WATER")){
-      //     type = ElementType.WATER;
-      //   }
-      //   int x = new Integer(objTokens[1]);
-      //   int y = new Integer(objTokens[2]);
-      //   int w = new Integer(objTokens[3]);
-      //   int h = new Integer(objTokens[4]);
-      //   objects.add(new Gem(x, y, w, h, type));
-      // }
-      //
-      // if(objTokens[0].equals("Button")){
-      //   int x = new Integer(objTokens[0]);
-      //   int y = new Integer(objTokens[1]);
-      //   int w = new Integer(objTokens[2]);
-      //   int h = new Integer(objTokens[3]);
-      //   objects.add(new Button(x, y, w, h));
-      // }
-      //
-      // if(objTokens[0].equals("Door")){
-      //
-      //   ElementType type = ElementType.FIRE;
-      //   if(objTokens[5].equals("FIRE")){
-      //     type = ElementType.FIRE;
-      //   }
-      //   if(objTokens[5].equals("WATER")){
-      //     type = ElementType.WATER;
-      //   }
-      //   int x = new Integer(objTokens[1]);
-      //   int y = new Integer(objTokens[2]);
-      //   int w = new Integer(objTokens[3]);
-      //   int h = new Integer(objTokens[4]);
-      //   objects.add(new Door(x, y, w, h, type));
-      //
-      // }
-      //  if(tokens[0].equals("MovingPlatform")){
-      //   int x = new Integer(objTokens[0]);
-      //   int y = new Integer(objTokens[1]);
-      //   int w = new Integer(objTokens[2]);
-      //   int h = new Integer(objTokens[3]);
-      //   int yDisp = new Integer(tokens [4]);
-      //   objects.add(new MovingPlatform(x, y, w, h, yDisp));
-      // }
+       if(objTokens[0].equals("Gem")){
+         ElementType type = ElementType.FIRE;
+         if(objTokens[5].equals("FIRE")){
+           type = ElementType.FIRE;
+         }
+         if(objTokens[5].equals("WATER")){
+           type = ElementType.WATER;
+         }
+         int x = new Integer(objTokens[1]);
+         int y = new Integer(objTokens[2]);
+         int w = new Integer(objTokens[3]);
+         int h = new Integer(objTokens[4]);
+         objects.add(new Gem(x, y, w, h, type));
+       }
 
-    }
+       if(objTokens[0].equals("Door")){
+
+         ElementType type = ElementType.FIRE;
+         if(objTokens[5].equals("FIRE")){
+           type = ElementType.FIRE;
+         }
+         if(objTokens[5].equals("WATER")){
+           type = ElementType.WATER;
+         }
+         int x = new Integer(objTokens[1]);
+         int y = new Integer(objTokens[2]);
+         int w = new Integer(objTokens[3]);
+         int h = new Integer(objTokens[4]);
+         objects.add(new Door(x, y, w, h, type));
+       }
+       if(objTokens[0].equals("BUTTONGROUP")){
+         ButtonElevatorGroup b = new ButtonElevatorGroup();
+         i++;
+         objTokens = split(tokens[i], " ");
+         while(objTokens.length > 1){
+           if(objTokens[0].equals("Button")){
+            int x = new Integer(objTokens[1]);
+            int y = new Integer(objTokens[2]);
+            int w = new Integer(objTokens[3]);
+            int h = new Integer(objTokens[4]);
+            b.add(new Button(x, y, w, h));
+           }
+
+           if(tokens[0].equals("MovingPlatform")){
+            int x = new Integer(objTokens[0]);
+            int y = new Integer(objTokens[1]);
+            int w = new Integer(objTokens[2]);
+            int h = new Integer(objTokens[3]);
+            int yDisp = new Integer(objTokens [4]);
+            b.add(new MovingPlatform(x, y, w, h, yDisp));
+           }
+
+           i++;
+         }
+         objects.add(b);
+       }
+       //if(objTokens[0].equals("Button")){
+       //  int x = new Integer(objTokens[1]);
+       //  int y = new Integer(objTokens[2]);
+       //  int w = new Integer(objTokens[3]);
+       //  int h = new Integer(objTokens[4]);
+       //  objects.add(new Button(x, y, w, h));
+       //}
+
+       // if(tokens[0].equals("MovingPlatform")){
+       //  int x = new Integer(objTokens[0]);
+       //  int y = new Integer(objTokens[1]);
+       //  int w = new Integer(objTokens[2]);
+       //  int h = new Integer(objTokens[3]);
+       //  int yDisp = new Integer(objTokens [4]);
+       //  objects.add(new MovingPlatform(x, y, w, h, yDisp));
+       //}
+  }
 
   return objects;
 }

@@ -1,4 +1,4 @@
-class MovingPlatform{
+class MovingPlatform implements Displayable{
   int initialY, t, yDisp, numIterations;
   Rectangle Hitbox;
   public MovingPlatform(int x, int y, int w, int h, int yDisp){

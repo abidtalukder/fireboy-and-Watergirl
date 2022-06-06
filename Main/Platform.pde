@@ -1,4 +1,4 @@
-class Platform{
+class Platform implements Displayable{
   int x, y, w, h;
   ElementType type;
   
