@@ -45,7 +45,7 @@ void setup(){
   String[] levelOneStrings = new String[0];
   try{
     levelOneStrings = loadStrings("LevelOne.txt");
-    levelOne =  objectParser(levelOneStrings);
+    levelOne =  objectParser(levelOneStrings, controller);
   }
 
   catch(Exception e){
@@ -123,28 +123,70 @@ void setup(){
   Watergirl = new Character(37, 381, ElementType.WATER, map, controller);
 }
 
-void characterCollisions(Character Player){
-  for(Platform p : Platforms){
-    CollisionType collision = Player.rectangleCollisions(p);
-    if(collision != CollisionType.None){
+//void characterCollisions(Character Player){
+//  for(Platform p : Platforms){
+//    CollisionType collision = Player.rectangleCollisions(p);
+//    if(collision != CollisionType.None){
+//      if((Player.type == ElementType.FIRE && p.type == ElementType.WATER) || (Player.type == ElementType.WATER && p.type == ElementType.FIRE) || p.type == ElementType.POISON){
+//        reset();
+//      }
+//    }
+//    Player.collisions.add(collision);
+//  }
+//  Gem removed = null;
+//  for(Gem g : Gems){
+//    if(Player.type == g.type && Player.isTouchingGem(g)){
+//      removed = g; // This is to avoid ConcurrentModificationException
+//    }
+//  }
+//  if(removed != null){
+//    Gems.remove(removed);
+//  }
+//  Player.collisions.add(Player.rectangleCollisions(mp1));
+//  Player.update();
+//}
+void characterCollisions(Character Player, ArrayList<Object> objects){
+  //for(Platform p : Platforms){
+  //  CollisionType collision = Player.rectangleCollisions(p);
+  //  if(collision != CollisionType.None){
+  //    if((Player.type == ElementType.FIRE && p.type == ElementType.WATER) || (Player.type == ElementType.WATER && p.type == ElementType.FIRE) || p.type == ElementType.POISON){
+  //      reset();
+  //    }
+  //  }
+  //  
+  //}
+  for(Object o : Platforms){
+    if(o instanceof Platform){
+      Platform p = (Platform) o; 
+      CollisionType collision = Player.rectangleCollisions(p);
+      if(collision != CollisionType.None){
       if((Player.type == ElementType.FIRE && p.type == ElementType.WATER) || (Player.type == ElementType.WATER && p.type == ElementType.FIRE) || p.type == ElementType.POISON){
         reset();
       }
     }
     Player.collisions.add(collision);
+    }
   }
+  
+  
   Gem removed = null;
-  for(Gem g : Gems){
-    if(Player.type == g.type && Player.isTouchingGem(g)){
-      removed = g; // This is to avoid ConcurrentModificationException
+  for(Object o : objects){
+    if(o instanceof Gem){
+      Gem g = (Gem) o;
+      if(Player.type == g.type && Player.isTouchingGem(g)){
+        removed = g; // This is to avoid ConcurrentModificationException (by deleting stuff in the collection while you're iterating through it)
+      }
     }
   }
   if(removed != null){
-    Gems.remove(removed);
+    objects.remove(removed);
   }
-  Player.collisions.add(Player.rectangleCollisions(mp1));
+  
+  
+  // Player.collisions.add(Player.rectangleCollisions(mp1));
   Player.update();
 }
+
 
 void draw(){
   if(!haveWon){
@@ -156,23 +198,23 @@ void draw(){
     controller.keyRemove(KeyEvent.VK_R);
   }
 
-    characterCollisions(Fireboy);
-    characterCollisions(Watergirl);
+    //characterCollisions(Fireboy);
+    //characterCollisions(Watergirl);
 
-    d1.update(Fireboy.isTouchingDoor(d1));
-    d2.update(Watergirl.isTouchingDoor(d2));
-    b1.update(Fireboy.isTouchingButton(b1) || Watergirl.isTouchingButton(b1));
-    b2.update(Fireboy.isTouchingButton(b2) || Watergirl.isTouchingButton(b2));
-    mp1.update(b1.isPushed || b2.isPushed);
-    Fireboy.collisions = new HashSet<CollisionType>();
-    Watergirl.collisions = new HashSet<CollisionType>();
+    //d1.update(Fireboy.isTouchingDoor(d1));
+    //d2.update(Watergirl.isTouchingDoor(d2));
+    //b1.update(Fireboy.isTouchingButton(b1) || Watergirl.isTouchingButton(b1));
+    //b2.update(Fireboy.isTouchingButton(b2) || Watergirl.isTouchingButton(b2));
+    //mp1.update(b1.isPushed || b2.isPushed);
+    //Fireboy.collisions = new HashSet<CollisionType>();
+    //Watergirl.collisions = new HashSet<CollisionType>();
 
-    for(Platform p : Platforms){
-      p.display();
-    }
-    for(Gem g : Gems){
-      g.display();
-    }
+    //for(Platform p : Platforms){
+    //  p.display();
+    //}
+    //for(Gem g : Gems){
+    //  g.display();
+    //}
 
     //d1.display();
     //d2.display();
@@ -187,6 +229,58 @@ void draw(){
     - Make an object arraylist of all the things in the level
     - Have every "displayable" implement Displayable, to avoid cluttering Main
     */
+    
+    //Character fireboy, watergirl;
+    //for(Object o : levelOne){
+    //  if(o instanceof Character){
+    //    if(((Character) o).type == ElementType.FIRE){
+    //      fireboy = (Character) o;
+    //    }
+    //    if(((Character) o).type == ElementType.WATER){
+    //      watergirl = (Character) o;
+    //    }        
+    //  }
+    //}
+    
+    //characterCollisions(Fireboy, levelOne);
+    //characterCollisions(Watergirl, levelOne);    
+    
+    for(Object o : levelOne){
+      if(o instanceof Character){
+        characterCollisions((Character) o, levelOne);
+//        ((Character) o).collisions = new HashSet<CollisionType>();
+      }
+    }
+    ArrayList<Character> characters = new ArrayList<Character>();
+    for(Object o : levelOne){
+      if(o instanceof Character){
+        characters.add((Character) o);
+      }
+    }
+    
+/*
+
+    //d1.update(Fireboy.isTouchingDoor(d1));
+    //d2.update(Watergirl.isTouchingDoor(d2));
+    //b1.update(Fireboy.isTouchingButton(b1) || Watergirl.isTouchingButton(b1));
+    //b2.update(Fireboy.isTouchingButton(b2) || Watergirl.isTouchingButton(b2));
+    //mp1.update(b1.isPushed || b2.isPushed);
+    //Fireboy.collisions = new HashSet<CollisionType>();
+    //Watergirl.collisions = new HashSet<CollisionType>();
+*/
+    for(Object o : levelOne){
+      if(o instanceof Door){
+        ((Door) o).update(characters);
+      }
+      if(o instanceof ButtonElevatorGroup){
+        ((ButtonElevatorGroup) o).update(characters);
+      }
+    }
+    
+    for(Character c : characters){
+      c.collisions = new HashSet<CollisionType>();
+    }
+    
     for(Object o : levelOne){
       if(o instanceof Displayable){
         ((Displayable) o).display();
@@ -194,7 +288,7 @@ void draw(){
     }
 
 
-    haveWon = d1.isOpen && d2.isOpen;
+   // haveWon = d1.isOpen && d2.isOpen;
   }
   else{
     background(255);
@@ -216,12 +310,31 @@ void keyReleased(){
   controller.keyRemove(keyCode);
 }
 
-ArrayList<Object> objectParser(String[] tokens) throws FileNotFoundException{
+ArrayList<Object> objectParser(String[] tokens, Controller controller){
   ArrayList<Object> objects = new ArrayList<Object>();
   String[] objTokens;
-
+  // objects.add()
   for(int i = 0; i < tokens.length; i++){
       objTokens = split(tokens[i], " ");
+      if(objTokens[0].equals("Character")){
+        int x = new Integer(objTokens[1]);
+        int y = new Integer(objTokens[2]);
+        HashMap<Integer, Action> map = new HashMap<Integer, Action>();
+        if(objTokens[3].equals("FIRE")){
+            map.put(KeyEvent.VK_UP, Action.Up);
+            map.put(KeyEvent.VK_LEFT, Action.Left);
+            map.put(KeyEvent.VK_RIGHT, Action.Right);
+            objects.add(new Character(x, y, ElementType.FIRE, map, controller));
+        }
+        if(objTokens[3].equals("WATER")){
+          map.put(KeyEvent.VK_W, Action.Up);
+          map.put(KeyEvent.VK_A, Action.Left);
+          map.put(KeyEvent.VK_D, Action.Right);
+          objects.add(new Character(x, y, ElementType.WATER, map, controller));
+        }
+
+      }
+
       if(objTokens[0].equals("Platform")){
         ElementType type = ElementType.DEFAULT;
         if(objTokens[5].equals("DEFAULT")){
@@ -286,35 +399,20 @@ ArrayList<Object> objectParser(String[] tokens) throws FileNotFoundException{
             b.add(new Button(x, y, w, h));
            }
 
-           if(tokens[0].equals("MovingPlatform")){
-            int x = new Integer(objTokens[0]);
-            int y = new Integer(objTokens[1]);
-            int w = new Integer(objTokens[2]);
-            int h = new Integer(objTokens[3]);
-            int yDisp = new Integer(objTokens [4]);
+           if(objTokens[0].equals("MovingPlatform")){
+            int x = new Integer(objTokens[1]);
+            int y = new Integer(objTokens[2]);
+            int w = new Integer(objTokens[3]);
+            int h = new Integer(objTokens[4]);
+            int yDisp = new Integer(objTokens[5]);
             b.add(new MovingPlatform(x, y, w, h, yDisp));
            }
 
            i++;
+           objTokens = split(tokens[i], " ");
          }
          objects.add(b);
        }
-       //if(objTokens[0].equals("Button")){
-       //  int x = new Integer(objTokens[1]);
-       //  int y = new Integer(objTokens[2]);
-       //  int w = new Integer(objTokens[3]);
-       //  int h = new Integer(objTokens[4]);
-       //  objects.add(new Button(x, y, w, h));
-       //}
-
-       // if(tokens[0].equals("MovingPlatform")){
-       //  int x = new Integer(objTokens[0]);
-       //  int y = new Integer(objTokens[1]);
-       //  int w = new Integer(objTokens[2]);
-       //  int h = new Integer(objTokens[3]);
-       //  int yDisp = new Integer(objTokens [4]);
-       //  objects.add(new MovingPlatform(x, y, w, h, yDisp));
-       //}
   }
 
   return objects;

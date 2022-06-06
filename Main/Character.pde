@@ -1,4 +1,4 @@
-class Character{
+class Character implements Displayable{
   float x, y, w, h, vx, vy, ax, ay;
 
   float g = 0.4; // Gravitational constant
@@ -128,5 +128,7 @@ class Character{
   boolean isTouchingGem(Gem g){
       return Hitbox.isTouching(g.Hitbox);     
   }
+  
+  
   
 }

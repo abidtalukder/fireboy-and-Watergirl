@@ -11,7 +11,29 @@ class Door implements Displayable{
     this.type = type;
   }
 
-  void update(boolean isTouchingPlayer){
+  //void update(boolean isTouchingPlayer){
+  //  if(isTouchingPlayer){
+  //    if(t == numFrames && !isOpen){
+  //      isOpen = true;
+  //    }
+  //    else if(!isOpen){
+  //      this.t = this.t + 1;
+  //    }
+  //  }
+  //  else{
+  //    isOpen = false;
+  //    if(t > 0)
+  //      this.t = this.t - 1;
+  //  }
+  //}
+    void update(ArrayList<Character> characters){
+    boolean isTouchingPlayer = false;
+    for(Character c : characters){
+      if(c.type == this.type && c.isTouchingDoor(this) ){
+        isTouchingPlayer = true;
+      }
+    }
+    
     if(isTouchingPlayer){
       if(t == numFrames && !isOpen){
         isOpen = true;
@@ -26,6 +48,7 @@ class Door implements Displayable{
         this.t = this.t - 1;
     }
   }
+  
 
 
   void display(){
