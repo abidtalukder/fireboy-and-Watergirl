@@ -50,13 +50,17 @@ boolean isDead = false;
     y += vy;
 
     checkBoundaries();
-    isTouchingPlayers();
     isDead();
+    isTouchingPlayers();
+    
   }
   
   void isTouchingPlayers() {
+    
+    boolean f = rectangleCollisions(Fireboy)==CollisionType.Bottom || rectangleCollisions(Fireboy)==CollisionType.Left|| rectangleCollisions(Fireboy)==CollisionType.Right;
+    boolean w = rectangleCollisions(Watergirl)==CollisionType.Left || rectangleCollisions(Watergirl)==CollisionType.Right || rectangleCollisions(Watergirl)==CollisionType.Bottom;
   
-    if (rectangleCollisions(Fireboy)==CollisionType.Bottom || rectangleCollisions(Fireboy)==CollisionType.Left|| rectangleCollisions(Fireboy)==CollisionType.Right || rectangleCollisions(Watergirl)==CollisionType.Left || rectangleCollisions(Watergirl)==CollisionType.Right || rectangleCollisions(Watergirl)==CollisionType.Bottom) {
+    if ((!Fireboy.isKilled && f) || (!Watergirl.isKilled && w) ) {
       reset();
     }
   
@@ -64,13 +68,14 @@ boolean isDead = false;
   
   void isDead(){
   
-    boolean f = (rectangleCollisions(Fireboy)==CollisionType.Top);
+    boolean f = rectangleCollisions(Fireboy)==CollisionType.Top;
     boolean w = rectangleCollisions(Watergirl) == CollisionType.Top;
     
-    isDead = f || w;
+    //isDead = f || w;
      
     if (f) {
-    //isDead = true;
+   isDead = true;
+   Fireboy.isKilled = true;
     //Fireboy.vy -= 4;
     //HashSet<Action> actions = Fireboy.currActions();
     //if (actions.contains(Action.Right)) {
@@ -87,7 +92,8 @@ boolean isDead = false;
     }
     
     if (w) {
-    //isDead = true;
+    isDead = true;
+    Watergirl.isKilled= true;
     //Watergirl.ay -= 4;
     //HashSet<Action> actions = Watergirl.currActions();
     //if (actions.contains(Action.Right)) {
