@@ -10,7 +10,7 @@ class Portal {
   public Portal(int xa, int ya) {
     x = xa;
     y = ya;
-    wait = 10;
+    wait = 250;
     counter = 0;
     w=30;
     h=50;
