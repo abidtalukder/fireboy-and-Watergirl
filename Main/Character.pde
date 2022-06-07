@@ -7,6 +7,7 @@ class Character extends Moveable{
   //float jumpConstant = -8; // Jump constant (up y-accel when jumping)
   
   ElementType type;
+  boolean isKilled = false;
   Controller controller;
   HashMap<Integer, Action> map;
   HashSet<Action> actions;
@@ -52,7 +53,7 @@ class Character extends Moveable{
     rect(x, y, w, h);
   }
 
-  void update(){
+ void update(){
     actions = currActions();
     ax = 0;
     ay = g; // By default, set gravity to g
@@ -66,12 +67,13 @@ class Character extends Moveable{
     
     checkBoxCollisions();
 
-    if(y + h >= height || collisions.contains(CollisionType.Bottom) || boxCollisions.contains(CollisionType.Bottom)){
+    if(y + h >= height || collisions.contains(CollisionType.Bottom) || boxCollisions.contains(CollisionType.Bottom) || isKilled){
       ay -= g; // Normal force cancels out gravity force
       vy = 0;
-      if(actions.contains(Action.Up)){
+      if(actions.contains(Action.Up) || isKilled){
         ay += jumpConstant;
       }
+      isKilled = false;
     }
     
     friction = 1;

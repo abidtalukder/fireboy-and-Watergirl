@@ -94,7 +94,7 @@ void draw(){
     reset();
     controller.keyRemove(KeyEvent.VK_R);
   }
-  
+  p.update();
   for(Platform p : Platforms){
     CollisionType collision = Fireboy.rectangleCollisions(p);
     if(collision != CollisionType.None && (p.type == ElementType.WATER || p.type == ElementType.POISON)){
@@ -115,7 +115,7 @@ void draw(){
   }
   Watergirl.update();
  // e.update();
-  p.update();
+  
   // Watergirl.collisions.add(Watergirl.rectangleCollisions(mp1));
   Watergirl.collisions = new HashSet<CollisionType>();
   
@@ -134,7 +134,7 @@ void draw(){
   
   }
   
-  b1.update(Fireboy.isTouchingButton(b1) || Watergirl.isTouchingButton(b1) || Boxes.get(0).isTouchingButton(b1) || portalTouched);
+  b1.update(Fireboy.isTouchingButton(b1) || Watergirl.isTouchingButton(b1) || Boxes.get(0).isTouchingButton(b1));
   // mp1.update(b1.isPushed);
   
     d1.display();
