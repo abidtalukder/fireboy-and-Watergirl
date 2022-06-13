@@ -155,7 +155,7 @@ void draw(){
       reset();
       controller.keyRemove(KeyEvent.VK_R);
     }
-    // level.update();
+     level.update();
     level.display();
   }
   else{

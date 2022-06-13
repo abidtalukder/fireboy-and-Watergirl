@@ -52,9 +52,9 @@ class Level{
 
             if(objTokens[0].equals("Gem")){
                 ElementType type = ElementType.FIRE;
-                if(objTokens[5].equals("FIRE")){
-                type = ElementType.FIRE;
-                }
+                //if(objTokens[5].equals("FIRE")){
+                //type = ElementType.FIRE;
+                //}
                 if(objTokens[5].equals("WATER")){
                 type = ElementType.WATER;
                 }
@@ -68,9 +68,9 @@ class Level{
             if(objTokens[0].equals("Door")){
 
                 ElementType type = ElementType.FIRE;
-                if(objTokens[5].equals("FIRE")){
-                type = ElementType.FIRE;
-                }
+                //if(objTokens[5].equals("FIRE")){
+                //type = ElementType.FIRE;
+                //}
                 if(objTokens[5].equals("WATER")){
                 type = ElementType.WATER;
                 }
