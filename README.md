@@ -2,6 +2,10 @@
 
 Our game is a remake version of fireboy and watergirl along with other added features such as having enemies and portals that generate enemies for the user.
 
+# Prototype Link
+
+https://docs.google.com/document/d/10IBX13qTU44eIy8vTKw0G0A8TAnMusSfbCce0a-KqwE/edit?usp=sharing
+
 # Compile and Runtime instructions
 
 Running this project has been made a simple process for the user. The following details that the steps that are necessary:
