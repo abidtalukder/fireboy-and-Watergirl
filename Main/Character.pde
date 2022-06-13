@@ -128,7 +128,9 @@ class Character implements Displayable{
   boolean isTouchingGem(Gem g){
       return Hitbox.isTouching(g.Hitbox);     
   }
-  
+  void resetCollisions(){
+    collisions = new HashSet<CollisionType>();
+  }
   
   
 }
