@@ -78,4 +78,27 @@ May 28:
 
 May 30:
 - I made buttons that would enable elevator movement, and made some work on MovingPlatform (elevators)
-- Deleted checkBoundaries because the Player would never be touching the outer border anyhow due to Platforms
+- Deleted checkBoundaries because the Player would never be touching the outer border anyhow due to Platforms, removed some redundant comments // cleaned up code
+
+June 1:
+- Properly connected Buttons and Moving Platforms so that one or two buttons could be pressed in order to move the elevator
+- Tried making a level class for regulating different levels
+- Created gems that the Player could collect
+- Tried updating Rectangles to avoid some rectangular collision redundancy
+- Stored the position / dimensions of the objects in a Rectangular hitbox with the idea of regulating everything through Rectangle
+
+June 3:
+- I tried shifting the brunt of the mess of Platforms.add() and all the other object creation to level files
+
+June 5:
+- Made a displayable interface (with an ArrayList of Objects, it's useful to have everything display together)
+- Made a ButtonElevatorGroup that would regulate the button / elevator interactions
+
+June 6:
+- Removed gems because they were a redundant feature
+
+June 7:
+- Added a LevelEditor separate to Main. You can create lots of platforms, press 'z' to undo your last rectangle, and press 'p' to print out the list of rectangles you generated (which you can then use for your levels)
+
+June 12:
+- Again tried working on Level class and related implementations (file reading, Level objects in main, etc) - ran into too many issues with 'virtual method called' and 'out of heap space' issues.
