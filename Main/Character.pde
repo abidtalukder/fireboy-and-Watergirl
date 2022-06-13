@@ -19,6 +19,7 @@ class Character extends Moveable{
   
   public Character(int x, int y, int w, int h, ElementType type, HashMap<Integer, Action> map, Controller controller){
     super(x,y,w,h,type);
+    this.type = type;
     
     if(type != ElementType.FIRE && type != ElementType.WATER){
       throw new RuntimeException("Character Element Type is invalid");
@@ -45,12 +46,14 @@ class Character extends Moveable{
   void display(){
     if(type == ElementType.FIRE){
       fill(255, 165, 0);
+      rect(x, y, w, h);
     }
     else{
       fill(0, 0, 255);
+      rect(x, y, w, h);
     }
 
-    rect(x, y, w, h);
+    
   }
 
  void update(){

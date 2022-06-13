@@ -72,6 +72,8 @@ void setup(){
   map.put(KeyEvent.VK_RIGHT, Action.Right);
 
   Fireboy = new Character(37, 470, ElementType.FIRE, map, controller);
+  //Fireboy.type = ElementType.FIRE;
+  //System.out.println(Fireboy.type);
   //e = new Enemy(200,120);
 
   map = new HashMap<Integer, Action>();
@@ -81,6 +83,8 @@ void setup(){
   map.put(KeyEvent.VK_D, Action.Right);
 
   Watergirl = new Character(37, 381, ElementType.WATER, map, controller);
+  //Watergirl.type = ElementType.WATER;
+  //System.out.println(Watergirl.type);
   
 }
 
