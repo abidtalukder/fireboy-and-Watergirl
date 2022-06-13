@@ -19,14 +19,16 @@ Character Fireboy, Watergirl;
 Controller controller;
 HashSet keysPressed = new HashSet();
 ArrayList<Platform> Platforms;
-ArrayList<Box> Boxes;
-Door d1, d2;
-boolean haveWon;
-Button b1;
-//Enemy e;
-Portal p;
-// MovingPlatform mp1;
+ArrayList<Platform> PlatformsLevelTwo;
 
+ArrayList<Box> Boxes;
+Door d1, d2, d1Two, d2Two;
+boolean haveWon;
+boolean haveWonLevelTwo;
+
+Button b1;
+Portal p;
+// Door d1Two, d2Two;
 
 void setup(){
   size(500, 500);
@@ -51,18 +53,32 @@ void setup(){
   Platforms.add(new Platform(90, 155, 205, 25, ElementType.DEFAULT));
   Platforms.add(new Platform(185, 54, 305, 16, ElementType.DEFAULT));
   Platforms.add(new Platform(450, 450, 500, 500, ElementType.DEFAULT));
-  
   Platforms.add(new Platform(350, 200, 200, 50, ElementType.DEFAULT));
-  
   Platforms.add(new Platform(350, 486, 50, 10, ElementType.FIRE));
   Platforms.add(new Platform(250, 486, 50, 10, ElementType.WATER));
   Platforms.add(new Platform(200, 323, 50, 10, ElementType.POISON));
   
+  PlatformsLevelTwo = new ArrayList<Platform>();
+  PlatformsLevelTwo.add(new Platform(1, 5, 13, 496, ElementType.DEFAULT));
+  PlatformsLevelTwo.add(new Platform(2, 483, 499, 17, ElementType.DEFAULT));
+  PlatformsLevelTwo.add(new Platform(481, 4, 24, 484, ElementType.DEFAULT));
+  PlatformsLevelTwo.add(new Platform(171, 457, 190, 27, ElementType.DEFAULT));
+  PlatformsLevelTwo.add(new Platform(220, 413, 106, 44, ElementType.DEFAULT));
+  PlatformsLevelTwo.add(new Platform(13, 384, 164, 14, ElementType.DEFAULT));
+  PlatformsLevelTwo.add(new Platform(340, 380, 152, 18, ElementType.DEFAULT));
+  PlatformsLevelTwo.add(new Platform(75, 306, 352, 17, ElementType.DEFAULT));
+  PlatformsLevelTwo.add(new Platform(143, 253, 215, 58, ElementType.DEFAULT));
+  PlatformsLevelTwo.add(new Platform(1, 1, 505, 22, ElementType.DEFAULT));
+  PlatformsLevelTwo.add(new Platform(8, 155, 207, 20, ElementType.DEFAULT));
+  PlatformsLevelTwo.add(new Platform(299, 156, 197, 19, ElementType.DEFAULT));
+  PlatformsLevelTwo.add(new Platform(228, 200, 50, 55, ElementType.DEFAULT));
+
+  d1Two = new Door(40, 120, ElementType.FIRE);
+  d2Two = new Door(420, 120, ElementType.WATER);
   
   d1 = new Door(400, 15, 30, 40, ElementType.FIRE);    
   d2 = new Door(440, 15, 30, 40, ElementType.WATER);
   b1 = new Button(110, 310, 30, 15);
-  // mp1 = new MovingPlatform(35, 250, 65, 15, 50);
    Platforms.add(new Platform(20,320,100,b1));
   
   map.put(KeyEvent.VK_R, Action.Reset);
@@ -72,9 +88,7 @@ void setup(){
   map.put(KeyEvent.VK_RIGHT, Action.Right);
 
   Fireboy = new Character(37, 470, ElementType.FIRE, map, controller);
-  //Fireboy.type = ElementType.FIRE;
-  //System.out.println(Fireboy.type);
-  //e = new Enemy(200,120);
+
 
   map = new HashMap<Integer, Action>();
 
@@ -83,8 +97,7 @@ void setup(){
   map.put(KeyEvent.VK_D, Action.Right);
 
   Watergirl = new Character(37, 381, ElementType.WATER, map, controller);
-  //Watergirl.type = ElementType.WATER;
-  //System.out.println(Watergirl.type);
+  
   
 }
 
@@ -106,7 +119,6 @@ void draw(){
   if(!haveWon){
   background(255);
   
-  // "r" is pressed => Reset
   if(controller.currentlyHeld.contains(KeyEvent.VK_R)){
     reset();
     controller.keyRemove(KeyEvent.VK_R);
@@ -119,7 +131,6 @@ void draw(){
     }
     Fireboy.collisions.add(collision);
   }
-  // Fireboy.collisions.add(Fireboy.rectangleCollisions(mp1));
   Fireboy.update();
   Fireboy.collisions = new HashSet<CollisionType>(); // Resetting the collisions
   
@@ -131,9 +142,8 @@ void draw(){
     Watergirl.collisions.add(collision);
   }
   Watergirl.update();
- // e.update();
+
   
-  // Watergirl.collisions.add(Watergirl.rectangleCollisions(mp1));
   Watergirl.collisions = new HashSet<CollisionType>();
   
   for(Platform po : Platforms){
@@ -152,19 +162,68 @@ void draw(){
   }
   
   b1.update(Fireboy.isTouchingButton(b1) || Watergirl.isTouchingButton(b1) || Boxes.get(0).isTouchingButton(b1));
-  // mp1.update(b1.isPushed);
+
   
     d1.display();
     d2.display();
     b1.display();
-    // mp1.display();
+
     Boxes.get(0).update();
     Boxes.get(0).display();
-    //e.display();
+
     p.display();
     Fireboy.display();
     Watergirl.display();
     haveWon = d1.isOpen && d2.isOpen;
+    if(haveWon){
+      Fireboy.x = 37;
+      Fireboy.y = 470;
+      Watergirl.x = 463;
+      Watergirl.y = 470;
+    }
+  }
+  else if(!haveWonLevelTwo){
+  background(255);
+  
+  if(controller.currentlyHeld.contains(KeyEvent.VK_R)){
+    reset();
+    controller.keyRemove(KeyEvent.VK_R);
+  }
+  
+  for(Platform p : PlatformsLevelTwo){
+    CollisionType collision = Fireboy.rectangleCollisions(p);
+    if(collision != CollisionType.None && (p.type == ElementType.WATER || p.type == ElementType.POISON)){
+      reset();
+    }
+    Fireboy.collisions.add(collision);
+  }
+  Fireboy.update();
+  Fireboy.collisions = new HashSet<CollisionType>(); 
+  
+  for(Platform p : PlatformsLevelTwo){
+     CollisionType collision = Watergirl.rectangleCollisions(p);
+     if(collision != CollisionType.None && (p.type == ElementType.FIRE || p.type == ElementType.POISON)){
+      reset();
+    }
+    Watergirl.collisions.add(collision);
+  }
+  Watergirl.update();
+
+  
+  Watergirl.collisions = new HashSet<CollisionType>();
+  
+  for(Platform po : PlatformsLevelTwo){
+    po.display();
+  }
+  d1Two.update(Fireboy.isTouchingDoor(d1Two));
+  d2Two.update(Watergirl.isTouchingDoor(d2Two));
+    
+    d1Two.display();
+    d2Two.display();
+    
+    Fireboy.display();
+    Watergirl.display();
+    haveWonLevelTwo = d1Two.isOpen && d2Two.isOpen;  
   }
   else{
     background(255);
@@ -174,14 +233,16 @@ void draw(){
 }
 
 void reset(){
-  setup(); // For now, we will just setup the level from scratch
+  setup(); 
 }
 
 void keyPressed(){
    controller.keyAdd(keyCode);
 }
 
-
+void mousePressed(){
+  println(mouseX + ", " + mouseY);
+}
 void keyReleased(){
   controller.keyRemove(keyCode);
 }

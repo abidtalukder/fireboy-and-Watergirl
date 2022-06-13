@@ -11,6 +11,16 @@ class Door{
     numFrames = 15; // Higher number => slower speed // lower number => higher speed
     this.type = type;
   }
+    public Door(int x, int y, ElementType type){
+      this.x = x;
+      this.y = y;
+      this.w = 30; 
+      this.h = 40;
+      t = 0;
+      numFrames = 15; // Higher number => slower speed // lower number => higher speed
+      this.type = type;
+    }
+  
   
   void update(boolean isTouchingPlayer){
     if(isTouchingPlayer){

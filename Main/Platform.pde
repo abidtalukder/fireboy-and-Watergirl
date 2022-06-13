@@ -24,15 +24,10 @@ class Platform{
     w = 60;
     range = r;
     activate = a;
-    type = ElementType.ELEVATOR;
-    
-    
+    type = ElementType.ELEVATOR;  
   }
   
   void display(){
-    
-    
-    
     move();
     switch(type){
       case DEFAULT:
@@ -56,51 +51,32 @@ class Platform{
   }
   
   
- void move() {
-  
+  void move() {
     if (type == ElementType.ELEVATOR){
-      
-      
-    
-    if (activate != null && activate.isPushed){
-      System.out.println("pressed");
-    wait++;
-    if (wait >= 3) {
-     wait = 0;
-      
-     
-     
-     if (counter < range) {
-     counter ++;
-     y--;
-     }
-    
-    }
-    
-    } else {
-    
-      wait ++;
-      
-      if (wait >= 3){
-      
-        wait = 0;
-        
-        
-        if (counter != 0){
-        y++;
-        counter --;
-        
-        
-        
+      if (activate != null && activate.isPushed){
+        wait++;
+        if (wait >= 3) {
+          wait = 0; 
+          if (counter < range) {
+            counter ++;
+            y--;
+          }
         }
-      
+      }
+
+      else {
+        wait ++;
+        if (wait >= 3){
+          wait = 0;
+          if (counter != 0){
+            y++;
+            counter--;    
+          }
+        }
       }
       
-    
+      
     }
-    
-    }
-  
-  
   }
+
 }

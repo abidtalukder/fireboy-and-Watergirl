@@ -141,52 +141,7 @@ CollisionType rectangleCollisions(Box p) {
     return CollisionType.None;
   }
 
-/**
- REALLY NEED TO SETUP INHERITANCE FOR MOVING PLATFORMS TOMORROW
- IN GENERAL, NEED TO IMPLEMENT MORE CLASS HEIRARCHIES AND INTERFACES
-**/
-/*
-  CollisionType rectangleCollisions(MovingPlatform p){
-  
-  // Rectangular collision occurs when the components distances between the centers
-  // is less than the the sum of half the widths and the sum of half the heights
-  
-  
-  // Displacements between the centers
-  // Identify the center coordinates (left top translated by halfWidth, halfHeight) and subtract
-  
-  float dx = (this.x + this.w / 2.0) - (p.x + p.w / 2.0);
-  float dy = (this.y + this.h / 2.0) - (p.y + p.h / 2.0);
-  
-  // The combined half dimensions are essentially component "radii"
-  float combinedHalfWidths = (this.w / 2.0) + (p.w / 2.0);
-  float combinedHalfHeights = (this.h / 2.0) + (p.h / 2.0);
-  
-  if(abs(dx) < combinedHalfWidths && abs(dy) < combinedHalfHeights){
-    // Overlap is "signed" here (positive / negative) for simplicity
-    float overlapX = combinedHalfWidths - abs(dx);
-    float overlapY = combinedHalfHeights - abs(dy);
-    if(overlapX >= overlapY){
-      if(dy > 0){
-        this.y += overlapY;
-        return CollisionType.Top;
-      }
-      
-      this.y -= overlapY;
-      return CollisionType.Bottom;
-    }
-    
-    if(dx > 0){
-      this.x += overlapX;
-      return CollisionType.Right;
-    }
-    this.x -= overlapX;
-    return CollisionType.Left;
-    
-  }
-  return CollisionType.None;
-}
-*/
+
   boolean isTouchingDoor(Door d){
       return (this.x + this.w >= d.x &&    
       this.x <= d.x + d.w &&    
@@ -194,7 +149,6 @@ CollisionType rectangleCollisions(Box p) {
       this.y <= d.y + d.h);     
   }
   
-  // Have to standardize the interactions between the Character to buttons / doors / platforms [Rectangle abstract class?]
     boolean isTouchingButton(Button b){
       return (this.x + this.w >= b.x &&    
       this.x <= b.x + b.w &&    
@@ -213,29 +167,5 @@ CollisionType rectangleCollisions(Box p) {
       }
     }
 
-    //System.out.println(platformCollisions);
   }
-  /*
-  boolean isTouchingMovingPlatform(MovingPlatform p){
-      return (this.x + this.w >= p.x &&    
-      this.x <= p.x + p.w &&    
-      this.y + this.h >= p.currY &&    
-      this.y <= p.currY + p.h);     
-  }
- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
